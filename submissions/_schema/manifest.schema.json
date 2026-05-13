@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/gNucleus-AI/cad-bench-submission/blob/main/submissions/_schema/manifest.schema.json",
+  "title": "Parametric CAD Bench submission manifest",
+  "description": "Pointer from this GitHub repo to a contributor's run artifacts on Hugging Face, plus self-declared summary metrics that maintainers re-derive during manual review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "submission", "contributor", "bench", "agent", "model", "results", "declared"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Manifest schema version. Bump only via PR to manifest.schema.json."
+    },
+    "submission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "submitted_at"],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Increment when re-submitting the same (handle, agent, model) tuple after fixing issues."
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date (YYYY-MM-DD) the manifest was filed."
+        }
+      }
+    },
+    "contributor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["handle"],
+      "properties": {
+        "handle": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,38}$",
+          "description": "GitHub login of the submitter (lowercase)."
+        },
+        "org": {
+          "type": "string",
+          "description": "Optional display-name org / lab."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Optional contact email for verification follow-up."
+        }
+      }
+    },
+    "bench": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataset", "tag"],
+      "properties": {
+        "dataset": {
+          "type": "string",
+          "const": "gnucleus-ai/cad-bench"
+        },
+        "tag": {
+          "type": "string",
+          "enum": ["v1"],
+          "description": "Currently only v1 accepted. Future versions extend this enum."
+        }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,62}$",
+          "description": "Short slug for the agent (e.g. codex, claude-code, mini-swe-agent)."
+        },
+        "version": {
+          "type": "string",
+          "description": "Exact version string. For closed-source agents, a build identifier is fine."
+        },
+        "import_path": {
+          "type": "string",
+          "description": "Optional Python import path for custom Harbor adapters (informational)."
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Exact LiteLLM-style model id used (e.g. openai/gpt-5.5, vertex_ai/gemini-3.1-pro)."
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "Optional endpoint URL if non-default. Maintainers use this to verify trajectory plausibility."
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hf_repo", "hf_commit_oid", "runs_prefix"],
+      "properties": {
+        "hf_repo": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]+/[A-Za-z0-9._-]+$",
+          "description": "Hugging Face dataset id (owner/name) hosting your runs/ tree."
+        },
+        "hf_commit_oid": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$",
+          "description": "Full 40-char commit hash on the HF dataset. Maintainers verify against this exact oid (no float to main)."
+        },
+        "runs_prefix": {
+          "type": "string",
+          "pattern": "^runs/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/$",
+          "description": "Path prefix inside the HF repo, e.g. 'runs/codex/openai-gpt-5_5/'. Trailing slash required."
+        }
+      }
+    },
+    "declared": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mean_composite", "trials_per_task", "total_trials", "exceptions"],
+      "properties": {
+        "mean_composite": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Your claimed mean of the harmonic-mean composite across all trials. Maintainers re-derive from spot-checks and compare."
+        },
+        "trials_per_task": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of trials per task_id. Single-trial submissions are allowed but flagged on the leaderboard."
+        },
+        "total_trials": {
+          "type": "integer",
+          "minimum": 100,
+          "description": "trials_per_task × 100. Must equal exactly that."
+        },
+        "exceptions": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Trials that crashed / timed out / never produced a reward.json."
+        },
+        "cost_usd": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Optional. Maintainers re-derive from token counts × published pricing; the leaderboard uses the re-derived value."
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional free-form notes — harness tweaks, known limitations, agent quirks."
+    }
+  }
+}

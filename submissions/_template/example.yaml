@@ -1,0 +1,49 @@
+# Parametric CAD Bench — example submission manifest.
+#
+# Copy this file to:
+#   submissions/<your-github-handle>-<agent>-<model>.yaml
+#
+# Validated against submissions/_schema/manifest.schema.json by a
+# maintainer on every PR. Anything we re-derive (mean_composite,
+# cost_usd) is checked against your declared values — mismatches fail
+# the PR.
+
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-05-13"
+
+contributor:
+  handle: "octocat"
+  org: "Example Robotics"            # optional
+  email: "octocat@example.com"       # optional
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "codex"                      # short slug
+  version: "1.4.2"
+  import_path: ""                    # optional, for custom Harbor adapters
+
+model:
+  id: "openai/gpt-5.5"               # LiteLLM-style id used by your runner
+  endpoint: ""                       # optional, only if non-default
+
+results:
+  hf_repo: "octocat/cad-bench-results"
+  hf_commit_oid: "0123456789abcdef0123456789abcdef01234567"
+  runs_prefix: "runs/codex/openai-gpt-5_5/"
+
+declared:
+  mean_composite: 0.832
+  trials_per_task: 8
+  total_trials: 800
+  exceptions: 0
+  cost_usd: 170.00                   # optional; maintainers re-derive from token counts
+
+notes: |
+  Ran on 2026-05-12 against gnucleus-ai/cad-bench@v1. Codex was set to
+  reasoning_effort=high with 32K max output tokens. No harness patches.
