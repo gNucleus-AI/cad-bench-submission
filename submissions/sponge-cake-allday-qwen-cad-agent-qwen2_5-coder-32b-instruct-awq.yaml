@@ -1,0 +1,41 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-05-17"
+
+contributor:
+  handle: "sponge-cake-allday"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "qwen-cad-agent"
+  version: "0.1.0"
+  import_path: "harbor_agents.qwen_cad_agent:QwenCadAgent"
+
+model:
+  id: "Qwen/Qwen2.5-Coder-32B-Instruct-AWQ"
+  endpoint: "vLLM OpenAI-compatible endpoint served as qwen-coder"
+
+results:
+  hf_repo: "SpongeCakeAllDay/cad-bench-qwen-cad-agent-results"
+  hf_commit_oid: "e0ea1a341762dd1f6c73b071d0324d2ebb45503c"
+  runs_prefix: "runs/qwen-cad-agent/qwen2_5-coder-32b-instruct-awq/"
+
+declared:
+  mean_composite: 0.7106430978906769
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+
+notes: |
+  Method: template-first Harbor FreeCAD agent with execution-feedback repair.
+  Model served by vLLM as qwen-coder; underlying model Qwen/Qwen2.5-Coder-32B-Instruct-AWQ.
+  Agent used deterministic FreeCAD templates for recognized CAD families before falling back to the model.
+  Inner repair loop used local FreeCAD execution and artifact feedback only; benchmark verifier rewards were used only for post-run reporting.
+  Harbor support run: https://hub.harborframework.com/jobs/3c39e94a-5d89-4d28-8474-bdcca46ecd7f
+  Component means over 100 tasks with missing component fields treated as zero:
+  geometry_similarity=0.6731300386589554, cad_spec_consistency=0.8039540000000003, combined=0.7106430978906769.
