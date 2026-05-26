@@ -1,0 +1,40 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-05-25"
+
+contributor:
+  handle: "sponge-cake-allday"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "cadbench-freecad-agent"
+  version: "0.1.0-initial"
+  import_path: "harbor_agents.freecad_cad_agent:CadBenchFreeCadAgent"
+
+model:
+  id: "anthropic/claude-haiku-4.5"
+  endpoint: "OpenRouter OpenAI-compatible endpoint"
+
+results:
+  hf_repo: "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs"
+  hf_commit_oid: "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc"
+  runs_prefix: "runs/cadbench-freecad-agent/claude-haiku-4_5/"
+
+declared:
+  mean_composite: 0.35787665980784517
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 2.7287650000000001
+
+notes: |
+  Initial cadbench-freecad-agent Harbor run using local FreeCAD execution and artifact validation repair.
+  Claude Haiku 4.5 via OpenRouter.
+  Declared mean_composite treats missing reward.json trials as zero across all 100 CAD-Bench tasks.
+  Uploaded artifact counts: reward_json=100, answer.FCStd=83, answer.py=100.
+  These are completed initial-agent runs from the original project, excluding later validator-dev experiments and partial GPT/Kimi/GLM attempts.
