@@ -1,0 +1,40 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-07-07"
+
+contributor:
+  handle: "rekurin"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "mini-swe-agent"
+  version: "2.4.3"
+
+model:
+  id: "qwen/qwen3.6-27b"
+  endpoint: "OpenRouter OpenAI-compatible endpoint"
+
+results:
+  hf_repo: "rekurin/cad-bench-results"
+  hf_commit_oid: "7ab1c6412ea0d45f6bcb9490fe28f8dc65aa4b08"
+  runs_prefix: "runs/mini-swe-agent/qwen3.6-27b/"
+
+declared:
+  mean_composite: 0.3600789179880547
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 7.7549417192
+
+notes: |
+  Best clean run selected from three 100-task Harbor trials using mini-swe-agent with OpenRouter.
+  Selected source job: cadbench-mini-swe-agent-longcode-qwen3.6-27b-trial-1.
+  Trial means: trial-1=0.3600789179880547, trial-2=0.2533639934189557, trial-3=0.3266374446284253.
+  Trial-2 had two exceptions: AgentTimeoutError=1 and NonZeroAgentExitCodeError=1. The selected trial had zero exceptions.
+  The local Harbor verifier parser was patched to ignore nonnumeric explanatory fields in CAD-Bench reward.json while preserving the raw reward.json artifacts.
+  Replace results.hf_repo and results.hf_commit_oid with the uploaded Hugging Face dataset repo and exact 40-character commit hash before submitting.
