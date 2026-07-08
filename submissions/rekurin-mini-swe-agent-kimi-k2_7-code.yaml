@@ -37,4 +37,3 @@ notes: |
   Trial means: trial-1=0.46330794434942907, trial-2=0.5051315875924388, trial-3=0.514702413463829.
   All three Kimi trials completed 100/100 with zero exceptions.
   The local Harbor verifier parser was patched to ignore nonnumeric explanatory fields in CAD-Bench reward.json while preserving the raw reward.json artifacts.
-  Replace results.hf_repo and results.hf_commit_oid with the uploaded Hugging Face dataset repo and exact 40-character commit hash before submitting.
