@@ -1,0 +1,43 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-07-19"
+
+contributor:
+  handle: "ericspencer00"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "claude-code"
+  version: "2.1.214"
+
+model:
+  id: "claude-fable-5"
+
+results:
+  hf_repo: "EricSpencer00/cad-bench-results"
+  hf_commit_oid: "f6f0b75a445e244cd9b4b7de75b00a5f4e7dcf61"
+  runs_prefix: "runs/claude-code/claude-fable-5/"
+
+declared:
+  mean_composite: 0.757675
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 46.71
+
+notes: |
+  Ran 2026-07-18 against gnucleus-ai/cad-bench@v1 via
+  `harbor run -d gnucleus-ai/cad-bench@v1 -a claude-code -m claude-fable-5`
+  with reasoning_effort=low, max_turns=50. Single trial per task (100 trials,
+  0 errors), graded by the project's freecad-validator.
+
+  Billing: executed on a Claude Code Max ($200/mo) subscription, so marginal
+  API cost was $0. The declared cost_usd 46.71 is the API-equivalent, re-derived
+  from measured token counts (17.53M input incl. 16.66M cache-read, 425.8K output)
+  at published 2026-07 Anthropic per-MTok prices with cache-read billed at the
+  cache-read rate. Re-derive freely.
