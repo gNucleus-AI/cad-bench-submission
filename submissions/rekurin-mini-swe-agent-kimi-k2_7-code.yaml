@@ -1,0 +1,39 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-07-07"
+
+contributor:
+  handle: "rekurin"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "mini-swe-agent"
+  version: "2.4.3"
+
+model:
+  id: "moonshotai/kimi-k2.7-code"
+  endpoint: "OpenRouter OpenAI-compatible endpoint"
+
+results:
+  hf_repo: "rekurin/cad-bench-results"
+  hf_commit_oid: "7ab1c6412ea0d45f6bcb9490fe28f8dc65aa4b08"
+  runs_prefix: "runs/mini-swe-agent/kimi-k2.7-code/"
+
+declared:
+  mean_composite: 0.514702413463829
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 10.6804436804
+
+notes: |
+  Best clean run selected from three 100-task Harbor trials using mini-swe-agent with OpenRouter.
+  Selected source job: cadbench-mini-swe-agent-longcode-kimi-k2.7-code-trial-3.
+  Trial means: trial-1=0.46330794434942907, trial-2=0.5051315875924388, trial-3=0.514702413463829.
+  All three Kimi trials completed 100/100 with zero exceptions.
+  The local Harbor verifier parser was patched to ignore nonnumeric explanatory fields in CAD-Bench reward.json while preserving the raw reward.json artifacts.
