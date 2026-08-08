@@ -1,0 +1,91 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-09"
+
+contributor:
+  handle: "xavierpeich"
+  org: "Peich Technologies"
+  email: "xavier@peich.xyz"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "claude-code"
+  version: "2.1.226"
+
+model:
+  id: "claude-opus-5"
+
+results:
+  hf_repo: "xavierpeich/cad-bench-results"
+  hf_commit_oid: "95d8d99fb772ef5524c90c8c5b81e6567579d2c9"
+  runs_prefix: "runs/claude-code/claude-opus-5/"
+
+declared:
+  mean_composite: 0.881451
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 48.64
+
+notes: |
+  Claude Opus 5 via Claude Code, run 2026-08-08 against
+  gnucleus-ai/cad-bench@v1. Agent kwargs: max_turns=50,
+  max_budget_usd=25, reasoning_effort=high — matching the kwargs
+  recorded in the published baseline runs' config.json.
+
+  Per-axis means over the 100 tasks: geometry_similarity 0.877,
+  cad_spec_consistency 0.939, combined 0.881 (stdev 0.207).
+  49 tasks scored a perfect 1.0; one scored 0.
+
+  The single 0 is task gnucleus-ai/freecad-7ba017c45b. The agent
+  emitted one text block ("I'll write the FreeCAD script for the hex
+  flange nut."), stop_reason end_turn, 23 output tokens, and made no
+  tool call, so no /app/answer.FCStd was produced and the grader
+  scored it 0. That trial's directory therefore has no answer.FCStd
+  or answer.py; every other task has both. It is a genuine agent
+  failure and is reported as-is — it was not re-run. For context, the
+  other 99 trials took a median of 9 agent turns (max 24); this was
+  the only trial with fewer than 3.
+
+  HARNESS PATCH (disclosure). Harbor 0.20.0 cannot run this task
+  suite unmodified: every trial fails with a pydantic ValidationError
+  before any score is recorded. Each task writes both
+  /logs/verifier/reward.txt (a float, which tests/test.sh and
+  run_scorer.py both name as "the Harbor reward contract") and
+  /logs/verifier/reward.json (described in run_scorer.py as "a JSON
+  sidecar with the per-axis sub-scores and reasons"). Harbor's
+  Verifier.verify() checks reward_json_path first, so it parses the
+  sidecar as the reward dict and rejects its two explanation strings
+  against VerifierResult.rewards: dict[str, float | int].
+
+  The only change made was to swap those two branches in
+  harbor/verifier/verifier.py so reward_text_path is checked first:
+
+      if self.trial_paths.reward_text_path.exists():
+          rewards = self._parse_reward_text()
+      elif self.trial_paths.reward_json_path.exists():
+          rewards = self._parse_reward_json()
+
+  This yields {"reward": <float>}, which is the shape recorded in the
+  published baseline runs' result.json. Scoring happens inside the
+  sealed task container and lands in reward.txt before Harbor reads
+  anything, so this changes which file is read, never a score. The
+  uploaded reward.json files are the grader's originals, untouched.
+  Verified against harbor 0.20.0 (PyPI) with no other modifications.
+
+  Environment: Apple M-series Mac mini, macOS 26, colima 0.10.3 (VM:
+  8 CPU / 10 GB), Docker 29.7.2, task images built natively as
+  linux/arm64. Two trials concurrent, 4h02m wall clock.
+
+  Cost: cost_usd above is Harbor's client-side estimate. The run
+  authenticated with a Claude subscription (CLAUDE_CODE_OAUTH_TOKEN),
+  so no API billing occurred; the figure is what the token counts
+  would price at published API rates. Totals across the 100 trials:
+  25,626,865 input tokens (24,162,329 of them cache reads) and
+  876,762 output tokens. Please re-derive from these rather than
+  trusting the estimate.
