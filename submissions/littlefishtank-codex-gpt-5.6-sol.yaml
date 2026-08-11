@@ -1,0 +1,54 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-11"
+
+contributor:
+  handle: "littlefishtank"
+  org: "gNucleus-AI"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "codex"
+  version: "0.147.0"
+
+model:
+  id: "openai/gpt-5.6-sol"
+
+results:
+  hf_repo: "gnucleus-ai/cad-gen-freecad-bench"
+  hf_commit_oid: "0c0bf7c0e3880c39ea20cf3a206405993a1073fe"
+  runs_prefix: "runs/codex/openai-gpt-5.6-sol/"
+
+declared:
+  mean_composite: 0.865340
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 97.5778385
+
+notes: |
+  GPT-5.6 Sol via Codex 0.147.0, run against gnucleus-ai/cad-bench@v1
+  with one trial per task and four concurrent trials. Codex used
+  reasoning_effort=max and reasoning_summary=detailed, with no explicit token
+  cap. Harbor used a persistable one-year timeout in place of infinity; no
+  trial timed out.
+
+  Per-axis means over 100 tasks: geometry_similarity 0.847519,
+  cad_spec_consistency 0.942963, combined 0.865340. Usage totals recorded by
+  Harbor: 66,864,508 input tokens, including 63,004,167 cached tokens, and
+  1,559,135 output tokens. cost_usd is the sum of the 100 selected Harbor
+  trial cost estimates.
+
+  HARBOR COMPATIBILITY. The run used NumericRewardVerifier, a subclass of
+  Harbor's standard verifier that removes the descriptive string fields from
+  reward.json before Pydantic validates the numeric reward mapping. It does
+  not alter the task-produced reward files or any score.
+
+  PUBLICATION SANITIZATION. Credentials, local home-directory paths, and
+  runtime UUIDs were redacted from text artifacts. Prompts, commands, answers,
+  FCStd files, model identifiers, and rewards were not changed.
