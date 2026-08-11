@@ -30,7 +30,7 @@ declared:
   trials_per_task: 1
   total_trials: 100
   exceptions: 0
-  cost_usd: 1.7349904
+  cost_usd: 36.59
 
 notes: |
   Grok 4.5 via Grok Build, run against gnucleus-ai/cad-bench@v1 with
@@ -39,12 +39,20 @@ notes: |
   persistable one-year timeout in place of infinity; no trial timed out.
 
   Per-axis means over 100 tasks: geometry_similarity 0.802323,
-  cad_spec_consistency 0.940637, combined 0.837076. Nested ACP usage totals:
-  3,855,839 input tokens, including 3,631,488 cached tokens; 20,886 visible
-  output tokens; and 11,921 reasoning tokens. The declared cost applies xAI's
-  published standard Grok 4.5 rates to those totals: $2/M uncached input,
-  $0.30/M cached input, and $6/M output/reasoning tokens. Harbor's ACP adapter
-  did not populate result.json cost_usd directly.
+  cad_spec_consistency 0.940637, combined 0.837076. The trajectories contain
+  1,970 model calls. Grok Build's ACP response retained usage only for each
+  task's final call: 3,855,839 input tokens, including 3,631,488 cached tokens;
+  20,886 visible output tokens; and 11,921 reasoning tokens across those 100
+  final calls. Those counters are not full-run totals.
+
+  The declared cost is a trace-based estimate. Reconstructing context growth
+  across all calls gives approximately 60.35M input tokens (4.42M uncached and
+  55.93M cached) and 1.83M output/reasoning tokens. Applying xAI's published
+  standard Grok 4.5 rates of $2/M uncached input, $0.30/M cached input, and
+  $6/M output/reasoning gives approximately $36.59. Reasonable reconstruction
+  bounds are $35-$43. An exact total is unavailable because the ACP bridge did
+  not retain per-call usage or xAI's per-request cost_in_usd_ticks, and Harbor's
+  result.json cost and aggregate token fields are null.
 
   HARBOR COMPATIBILITY. The run used NumericRewardVerifier, a subclass of
   Harbor's standard verifier that removes the descriptive string fields from
