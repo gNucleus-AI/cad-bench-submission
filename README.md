@@ -11,8 +11,12 @@ Harbor task suite. Each merged submission becomes a leaderboard row.
 
 A **manifest YAML** pointing at a Hugging Face dataset commit that hosts
 your raw run artifacts (per-trial `result.json`, `answer.FCStd`,
-`trajectory.jsonl`, etc., matching the layout of
+`trajectory.json`, etc., matching the layout of
 [`gnucleus-ai/cad-gen-freecad-bench`](https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench)).
+
+Harbor 0.20 writes trajectories as a single ATIF document in
+`trajectory.json`. Complete legacy `trajectory.jsonl` traces are also
+accepted.
 
 GitHub holds the lightweight pointer; Hugging Face holds the multi-GB
 artifacts. No binary files are committed here.

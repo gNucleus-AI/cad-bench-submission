@@ -11,7 +11,7 @@ and a maintainer re-grades it by hand.
 | Layer | Stored on | What lives there |
 |---|---|---|
 | Lightweight pointer | **This repo** (GitHub) | `submissions/<your-handle>-<agent>-<model>.yaml` — one manifest per submission |
-| Heavyweight artifacts | **Your Hugging Face dataset** | `runs/<agent>/<model>/<task_id>/{result.json, config.json, answer.FCStd, answer.py, agent.log, trajectory.jsonl, reward.json}` |
+| Heavyweight artifacts | **Your Hugging Face dataset** | `runs/<agent>/<model>/<task_id>/{result.json, config.json, answer.FCStd, answer.py, agent.log, trajectory.json, reward.json}` |
 | Verifier | **Maintainers** | Manual review — see [Verification](#verification) |
 
 Why split the two? Real submissions are multi-GB (100 tasks × N trials ×
@@ -31,14 +31,18 @@ runs/
             ├── answer.FCStd          # the parametric CAD file your agent saved (REQUIRED)
             ├── answer.py             # the script that produced it (REQUIRED)
             ├── agent.log             # full terminal transcript
-            └── trajectory.jsonl      # tool-use / model-call trace (one JSON object per line)
+            └── trajectory.json       # Harbor ATIF tool-use / model-call trace
 ```
 
-This is **the exact layout** that
+Harbor 0.20 writes the canonical trajectory as one ATIF document in
+`trajectory.json`. A complete legacy `trajectory.jsonl` trace, with one
+JSON object per line, is also accepted. At least one of these trajectory
+artifacts is required wherever this document requires a trajectory.
+
+This accepted layout supports both the
 [`gnucleus-ai/cad-gen-freecad-bench`](https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench)
-uses for the reference baseline runs — browse that dataset on Hugging
-Face to see a complete example of every required file before you build
-your own.
+reference baseline runs and current Harbor output. Browse that dataset
+on Hugging Face to see complete examples before you build your own.
 
 ## What you push
 
@@ -69,9 +73,9 @@ A maintainer reviews each PR by hand:
    [`gnucleus-freecad-validator`](https://github.com/gNucleus-AI/freecad-validator)
    on them locally, confirming the re-graded score is within `1e-4` of
    your declared `reward.json`.
-4. **Trajectory sanity** — eyeballs `agent.log` and `trajectory.jsonl`
-   from a few representative trials to confirm an actual agent
-   produced the work (not hand-authored FCStd).
+4. **Trajectory sanity** — eyeballs `agent.log` and `trajectory.json`
+   (or legacy `trajectory.jsonl`) from a few representative trials to
+   confirm an actual agent produced the work (not hand-authored FCStd).
 5. **Cost re-derivation** — derives USD from declared token counts ×
    the model's published price; the re-derived number is what lands on
    the leaderboard (we don't propagate your declared `cost_usd`).
@@ -114,10 +118,11 @@ reputation, not from us paying your API bill.
 
 ## Trust model
 
-For your first submission, the **full trajectory** (`agent.log` +
-`trajectory.jsonl`) is required so a maintainer can sanity-check that
-a real agent produced the work. After 2–3 verified-clean submissions
-from the same contributor, we'll relax the requirement to just
+For your first submission, the **full trajectory** (`agent.log` plus
+`trajectory.json` or legacy `trajectory.jsonl`) is required so a
+maintainer can sanity-check that a real agent produced the work. After
+2–3 verified-clean submissions from the same contributor, we'll relax
+the requirement to just
 `{result.json, reward.json, answer.FCStd, answer.py}`. This mirrors
 the SWE-Bench-Verified path.
 
@@ -129,9 +134,9 @@ informational; the trust signal is reproducible scoring on submitted
 FCStd files, not source availability.
 
 **Q: My agent doesn't use Harbor — can I still submit?**
-Yes, as long as you can produce the seven required per-trial files
-matching our schema. Harbor is the *recommended* runner, not the
-required one. Your `config.json` must still reference the
+Yes, as long as you can produce the required per-trial files using either
+accepted trajectory format above. Harbor is the *recommended* runner,
+not the required one. Your `config.json` must still reference the
 `cad-bench@v1` task digest so we know which spec your agent saw.
 
 **Q: How do I update an existing submission?**
