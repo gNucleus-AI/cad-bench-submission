@@ -1,0 +1,64 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-11"
+
+contributor:
+  handle: "littlefishtank"
+  org: "gNucleus-AI"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "claude-code"
+  version: "2.1.226"
+  import_path: "harbor_cadbench.cached_claude_code:CachedClaudeCode"
+
+model:
+  id: "claude-opus-5"
+
+results:
+  hf_repo: "gnucleus-ai/cad-gen-freecad-bench"
+  hf_commit_oid: "0c0bf7c0e3880c39ea20cf3a206405993a1073fe"
+  runs_prefix: "runs/claude-code/claude-opus-5/"
+
+declared:
+  mean_composite: 0.905837
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 1
+  cost_usd: 113.24406125
+
+notes: |
+  Claude Opus 5 via Claude Code 2.1.226, run against
+  gnucleus-ai/cad-bench@v1 with one selected trial per task and four
+  concurrent trials. Claude Code used reasoning_effort=max with no explicit
+  turn, dollar, token, or thinking-token cap. Harbor used a persistable
+  one-year timeout in place of infinity; no selected trial timed out.
+
+  Per-axis means over 100 tasks: geometry_similarity 0.888813,
+  cad_spec_consistency 0.972360, combined 0.905837. Usage totals for the
+  selected 100 trials: 66,666,614 input tokens, including 63,148,438 cached
+  tokens, and 2,367,997 output tokens. cost_usd is the sum of the selected
+  trial cost estimates; interrupted and superseded attempts are excluded.
+
+  The canonical task set was assembled chronologically from interrupted and
+  resumed jobs. A later retry replaced an earlier task only when it had every
+  required publication artifact; selection never considered reward value.
+  One selected result, freecad-fa1a50cf2b, records
+  NonZeroAgentExitCodeError after producing answer.py and answer.FCStd. The
+  sealed verifier scored those artifacts normally, and the result is retained
+  with exceptions=1.
+
+  HARBOR COMPATIBILITY. CachedClaudeCode mounts the exact Claude Code 2.1.226
+  binary into each task instead of downloading it repeatedly; model execution
+  is unchanged. NumericRewardVerifier removes descriptive string fields from
+  reward.json before Pydantic validates the numeric reward mapping. It does
+  not alter the task-produced reward files or any score.
+
+  PUBLICATION SANITIZATION. Credentials, local home-directory paths, and
+  runtime UUIDs were redacted from text artifacts. Prompts, commands, answers,
+  FCStd files, model identifiers, and rewards were not changed.
