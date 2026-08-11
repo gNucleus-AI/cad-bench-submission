@@ -1,0 +1,66 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-11"
+
+contributor:
+  handle: "littlefishtank"
+  org: "gNucleus-AI"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "grok-build"
+  version: "0.2.52"
+  import_path: "harbor_xai_acp.prebaked_agent:PrebakedAcpAgent"
+
+model:
+  id: "grok-4.5"
+
+results:
+  hf_repo: "gnucleus-ai/cad-gen-freecad-bench"
+  hf_commit_oid: "0c0bf7c0e3880c39ea20cf3a206405993a1073fe"
+  runs_prefix: "runs/grok-build/grok-4.5/"
+
+declared:
+  mean_composite: 0.837076
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 36.59
+
+notes: |
+  Grok 4.5 via Grok Build, run against gnucleus-ai/cad-bench@v1 with
+  one trial per task and four concurrent trials. The agent used its default
+  high reasoning mode with no explicit thinking-token cap. Harbor used a
+  persistable one-year timeout in place of infinity; no trial timed out.
+
+  Per-axis means over 100 tasks: geometry_similarity 0.802323,
+  cad_spec_consistency 0.940637, combined 0.837076. The trajectories contain
+  1,970 model calls. Grok Build's ACP response retained usage only for each
+  task's final call: 3,855,839 input tokens, including 3,631,488 cached tokens;
+  20,886 visible output tokens; and 11,921 reasoning tokens across those 100
+  final calls. Those counters are not full-run totals.
+
+  The declared cost is a trace-based estimate. Reconstructing context growth
+  across all calls gives approximately 60.35M input tokens (4.42M uncached and
+  55.93M cached) and 1.83M output/reasoning tokens. Applying xAI's published
+  standard Grok 4.5 rates of $2/M uncached input, $0.30/M cached input, and
+  $6/M output/reasoning gives approximately $36.59. Reasonable reconstruction
+  bounds are $35-$43. An exact total is unavailable because the ACP bridge did
+  not retain per-call usage or xAI's per-request cost_in_usd_ticks, and Harbor's
+  result.json cost and aggregate token fields are null.
+
+  HARBOR COMPATIBILITY. The run used NumericRewardVerifier, a subclass of
+  Harbor's standard verifier that removes the descriptive string fields from
+  reward.json before Pydantic validates the numeric reward mapping. It does
+  not alter the task-produced reward files or any score.
+
+  PUBLICATION SANITIZATION. Credentials, local home-directory paths, and
+  runtime UUIDs were redacted from text artifacts. Non-selected private model
+  names in the agent's available-model catalogue were normalized or redacted.
+  The active model remains grok-4.5; prompts, commands, answers, FCStd files,
+  and rewards were not changed.
