@@ -1,0 +1,61 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-12"
+
+contributor:
+  handle: "littlefishtank"
+  org: "gNucleus-AI"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "mini-swe-agent"
+  version: "2.4.3"
+
+model:
+  id: "openrouter/moonshotai/kimi-k3"
+
+results:
+  hf_repo: "gnucleus-ai/cad-gen-freecad-bench"
+  hf_commit_oid: "a4eb46f00345670d727c29c465616d36272e7538"
+  runs_prefix: "runs/mini-swe-agent/moonshotai-kimi-k3/"
+
+declared:
+  mean_composite: 0.904255
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 63.9294593
+
+notes: |
+  Moonshot AI Kimi K3 through OpenRouter via Mini SWE-Agent 2.4.3, run
+  against gnucleus-ai/cad-bench@v1 with one selected trial per task and four
+  concurrent trials. Mini SWE-Agent used reasoning_effort=max with no
+  explicit turn, dollar, token, or thinking-token cap. Harbor used a
+  persistable one-year timeout in place of infinity; no selected trial timed
+  out.
+
+  Per-axis means over 100 tasks: geometry_similarity 0.881766,
+  cad_spec_consistency 0.976904, combined 0.904255. Usage totals for the
+  selected trials: 32,293,836 input tokens, including 26,338,474 cached
+  tokens, and 2,577,603 completion tokens, for 34,871,439 total tokens.
+  cost_usd is the exact sum of 1,411 OpenRouter response-level usage.cost
+  records for the selected trials.
+
+  The canonical task set was assembled chronologically from interrupted and
+  resumed jobs. Complete selected artifacts came from 26 tasks in the first
+  job, 2 in the second, and 72 in the final job. A later retry replaced an
+  earlier task only when it had every required publication artifact;
+  selection never considered reward value.
+
+  HARBOR COMPATIBILITY. NumericRewardVerifier removes descriptive string
+  fields from reward.json before Pydantic validates the numeric reward
+  mapping. It does not alter task-produced reward files or any score.
+
+  PUBLICATION SANITIZATION. Credentials, local home-directory paths, and
+  runtime UUIDs were redacted from text artifacts. Prompts, commands,
+  answers, FCStd files, model identifiers, and rewards were not changed.
