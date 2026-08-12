@@ -1,0 +1,60 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-12"
+
+contributor:
+  handle: "littlefishtank"
+  org: "gNucleus-AI"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "grok-build"
+  version: "0.2.52"
+  import_path: "harbor_xai_acp.prebaked_agent:PrebakedAcpAgent"
+
+model:
+  id: "grok-4.6"
+
+results:
+  hf_repo: "gnucleus-ai/cad-gen-freecad-bench"
+  hf_commit_oid: "a4eb46f00345670d727c29c465616d36272e7538"
+  runs_prefix: "runs/grok-build/grok-4.6/"
+
+declared:
+  mean_composite: 0.878407
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 69.228826
+
+notes: |
+  Grok 4.6 via Grok Build 0.2.52, run against
+  gnucleus-ai/cad-bench@v1 with one trial per task and four concurrent
+  trials. The agent used high reasoning effort with no explicit turn,
+  dollar, token, or thinking-token cap. Harbor used a persistable one-year
+  timeout in place of infinity; no trial timed out.
+
+  Per-axis means over 100 tasks: geometry_similarity 0.834858,
+  cad_spec_consistency 0.971610, combined 0.878407. The ACP adapter exposes
+  only final-response token counters, so full-session usage was reconstructed
+  from the complete trajectories with the o200k_base tokenizer: approximately
+  87,858,922 input tokens, including 83,714,743 cached tokens, and 3,180,516
+  output/reasoning tokens across 2,307 model calls. cost_usd applies the
+  published Grok 4.6 prices of $2/M uncached input, $0.50/M cached input, and
+  $6/M output to those reconstructed counts; it is therefore an estimate.
+
+  HARBOR COMPATIBILITY. The ACP adapter routes Grok Build's model requests
+  through an OpenAI-compatible endpoint without changing prompts or model
+  responses. NumericRewardVerifier removes descriptive string fields from
+  reward.json before Pydantic validates the numeric reward mapping. It does
+  not alter task-produced rewards or any score.
+
+  PUBLICATION SANITIZATION. Private routing identifiers were replaced with
+  the announced public model name. Credentials, local home-directory paths,
+  and runtime UUIDs were redacted from text artifacts. Prompts, commands,
+  answers, FCStd files, and rewards were otherwise unchanged.
