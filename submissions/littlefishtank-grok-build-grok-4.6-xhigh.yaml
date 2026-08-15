@@ -1,0 +1,61 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-14"
+
+contributor:
+  handle: "littlefishtank"
+  org: "gNucleus-AI"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "grok-build"
+  version: "0.2.52"
+  import_path: "harbor_xai_acp.prebaked_agent:PrebakedAcpAgent"
+
+model:
+  id: "grok-4.6"
+
+results:
+  hf_repo: "gnucleus-ai/cad-gen-freecad-bench"
+  hf_commit_oid: "9bfc0b77fca5863ad573f41544f2033bde0a1862"
+  runs_prefix: "runs/grok-build/grok-4.6-xhigh/"
+
+declared:
+  mean_composite: 0.883754
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 76.62
+
+notes: |
+  Grok 4.6 via Grok Build 0.2.52, run against gnucleus-ai/cad-bench@v1
+  with one trial per task and four concurrent trials. The agent used xhigh
+  reasoning effort with no explicit turn, dollar, token, or thinking-token
+  cap. Harbor used a persistable one-year timeout in place of infinity; no
+  trial timed out. This is a separate reasoning configuration and is intended
+  to coexist with the existing Grok Build + Grok 4.6 high-effort entry.
+
+  Per-axis means over 100 tasks: geometry_similarity 0.843080,
+  cad_spec_consistency 0.966610, combined 0.883754. The trajectories contain
+  2,211 model calls. This run predates per-response usage capture in the ACP
+  adapter, so full-session usage is reconstructed from the trajectories:
+  approximately 81.03M input tokens, including 76.60M cached tokens, and
+  4.91M output/reasoning tokens. cost_usd applies the published Grok 4.6
+  rates of $2/M uncached input, $0.50/M cached input, and $6/M output and is
+  therefore an estimate.
+
+  HARBOR COMPATIBILITY. The ACP adapter routes Grok Build's model requests
+  through an OpenAI-compatible endpoint without changing prompts or model
+  responses. NumericRewardVerifier removes descriptive string fields from
+  reward.json before Pydantic validates the numeric reward mapping. It does
+  not alter task-produced rewards or any score.
+
+  PUBLICATION SANITIZATION. Private routing identifiers were normalized to
+  the announced public model name. Credentials, local paths, and runtime IDs
+  were redacted from text artifacts. Prompts, commands, answers, FCStd files,
+  and rewards were otherwise unchanged.
