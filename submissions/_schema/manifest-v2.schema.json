@@ -1,0 +1,270 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/gNucleus-AI/cad-bench-submission/blob/main/submissions/_schema/manifest-v2.schema.json",
+  "title": "Parametric CAD Bench v2 submission manifest",
+  "description": "Pointer to public Harbor Hub jobs, the exact trial-selection key, and self-declared summary metrics that maintainers re-derive during review.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "submission",
+    "contributor",
+    "bench",
+    "agent",
+    "model",
+    "results",
+    "declared"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1,
+      "description": "v2 manifest schema version."
+    },
+    "submission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "submitted_at"
+      ],
+      "properties": {
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Increment when re-submitting the same (handle, agent, model) tuple after fixing issues."
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO 8601 date (YYYY-MM-DD) the manifest was filed."
+        }
+      }
+    },
+    "contributor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "handle"
+      ],
+      "properties": {
+        "handle": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]{0,38}$",
+          "description": "GitHub login of the submitter (lowercase)."
+        },
+        "org": {
+          "type": "string",
+          "description": "Optional display-name org / lab."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Optional contact email for verification follow-up."
+        }
+      }
+    },
+    "bench": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset",
+        "tag",
+        "dataset_content_hash"
+      ],
+      "properties": {
+        "dataset": {
+          "type": "string",
+          "const": "gnucleus-ai/cad-bench"
+        },
+        "tag": {
+          "type": "string",
+          "const": "v2",
+          "description": "The only benchmark version currently accepting submissions."
+        },
+        "dataset_content_hash": {
+          "type": "string",
+          "const": "sha256:ab2e040d0adcfd2779b4f1ad554890cd98b5aa19845e00162933ba165144fe56",
+          "description": "Immutable Harbor content hash for gnucleus-ai/cad-bench@v2."
+        }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "reasoning_effort"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9._-]{0,62}$",
+          "description": "Short slug for the agent (e.g. codex, claude-code, mini-swe-agent)."
+        },
+        "version": {
+          "type": "string",
+          "description": "Exact version string. For closed-source agents, a build identifier is fine."
+        },
+        "import_path": {
+          "type": "string",
+          "description": "Optional Python import path for custom Harbor adapters (informational)."
+        },
+        "reasoning_effort": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Exact reasoning-effort setting used for the run."
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Exact LiteLLM-style model id used (e.g. openai/gpt-5.5, vertex_ai/gemini-3.1-pro)."
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "Optional endpoint URL if non-default. Maintainers use this to verify trajectory plausibility."
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_jobs",
+        "source_filter"
+      ],
+      "properties": {
+        "source_jobs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://hub\\.harborframework\\.com/jobs/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/?$"
+          },
+          "description": "Public Harbor Hub job URLs supplying the submitted trials."
+        },
+        "source_filter": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "agent",
+            "agent_version",
+            "model",
+            "reasoning_effort"
+          ],
+          "properties": {
+            "agent": {
+              "type": "string",
+              "description": "Exact Harbor agent name selecting trials from source_jobs."
+            },
+            "agent_version": {
+              "type": "string",
+              "description": "Exact Harbor agent version selecting trials from source_jobs."
+            },
+            "model": {
+              "type": "string",
+              "description": "Exact provider/model identifier selecting trials from source_jobs."
+            },
+            "reasoning_effort": {
+              "type": "string",
+              "description": "Exact reasoning-effort value selecting trials from source_jobs."
+            }
+          }
+        },
+        "hf_archive": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repo",
+            "commit_oid",
+            "runs_prefix"
+          ],
+          "properties": {
+            "repo": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]+/[A-Za-z0-9._-]+$",
+              "description": "Optional archival Hugging Face dataset id."
+            },
+            "commit_oid": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{40}$",
+              "description": "Pinned 40-character Hugging Face commit."
+            },
+            "runs_prefix": {
+              "type": "string",
+              "pattern": "^runs/[A-Za-z0-9._-]+/[A-Za-z0-9._-]+/$",
+              "description": "Optional archive path corresponding to the Harbor source jobs."
+            }
+          }
+        }
+      }
+    },
+    "declared": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mean_composite",
+        "mean_geometry_similarity",
+        "mean_cad_spec_consistency",
+        "trials_per_task",
+        "total_trials",
+        "exceptions"
+      ],
+      "properties": {
+        "mean_composite": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Your claimed mean of the harmonic-mean composite across all trials. Maintainers re-derive from spot-checks and compare."
+        },
+        "mean_geometry_similarity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Mean geometry-similarity subscore across every trial, counting failures as zero."
+        },
+        "mean_cad_spec_consistency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Mean CAD-spec-consistency subscore across every trial, counting failures as zero."
+        },
+        "trials_per_task": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of trials per task_id. Single-trial submissions are allowed but flagged on the leaderboard."
+        },
+        "total_trials": {
+          "type": "integer",
+          "minimum": 100,
+          "description": "trials_per_task × 100. Must equal exactly that."
+        },
+        "exceptions": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Trials that crashed / timed out / never produced a reward.json."
+        },
+        "cost_usd": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Optional. Maintainers re-derive from token counts × published pricing; the leaderboard uses the re-derived value."
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional free-form notes — harness tweaks, known limitations, agent quirks."
+    }
+  }
+}
