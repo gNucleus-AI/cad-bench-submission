@@ -1,0 +1,325 @@
+{
+  "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+  "description": "Per-axis means re-derived from each accepted v1 manifest's exact pinned public Hugging Face reward artifacts. Missing rewards and omitted subscores contribute zero.",
+  "rows": {
+    "ericspencer00-claude-code-claude-fable-5.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.862516,
+        "combined": 0.7576748483033036,
+        "geometry_similarity": 0.7495918040955953
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "f6f0b75a445e244cd9b4b7de75b00a5f4e7dcf61",
+        "hf_repo": "EricSpencer00/cad-bench-results",
+        "runs_prefix": "runs/claude-code/claude-fable-5/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-claude-code-claude-opus-5.yaml": {
+      "declared_exceptions": 1,
+      "metrics": {
+        "cad_spec_consistency": 0.97236,
+        "combined": 0.9058369000143872,
+        "geometry_similarity": 0.8888131420412451
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "0c0bf7c0e3880c39ea20cf3a206405993a1073fe",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/claude-code/claude-opus-5/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-codex-gpt-5.6-sol.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.942963,
+        "combined": 0.8653398647816879,
+        "geometry_similarity": 0.8475187837185661
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "0c0bf7c0e3880c39ea20cf3a206405993a1073fe",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/codex/openai-gpt-5.6-sol/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-grok-build-grok-4.5.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.940637,
+        "combined": 0.8370760650843765,
+        "geometry_similarity": 0.8023225611480784
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "0c0bf7c0e3880c39ea20cf3a206405993a1073fe",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/grok-build/grok-4.5/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-grok-build-grok-4.6-xhigh.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.96661,
+        "combined": 0.883753853820088,
+        "geometry_similarity": 0.8430799322360037
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "9bfc0b77fca5863ad573f41544f2033bde0a1862",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/grok-build/grok-4.6-xhigh/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-grok-build-grok-4.6.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.97161,
+        "combined": 0.8784073624238476,
+        "geometry_similarity": 0.8348582216000712
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "a4eb46f00345670d727c29c465616d36272e7538",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/grok-build/grok-4.6/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-mini-swe-agent-grok-4.6-xhigh.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.97161,
+        "combined": 0.8881599885537406,
+        "geometry_similarity": 0.852443248267528
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "9bfc0b77fca5863ad573f41544f2033bde0a1862",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/mini-swe-agent/grok-4.6/"
+      },
+      "task_count": 100
+    },
+    "littlefishtank-mini-swe-agent-kimi-k3.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.976904,
+        "combined": 0.9042551796743963,
+        "geometry_similarity": 0.881765817722629
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 0,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "a4eb46f00345670d727c29c465616d36272e7538",
+        "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+        "runs_prefix": "runs/mini-swe-agent/moonshotai-kimi-k3/"
+      },
+      "task_count": 100
+    },
+    "rekurin-mini-swe-agent-kimi-k2_7-code.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.688257,
+        "combined": 0.514702413463829,
+        "geometry_similarity": 0.4799050077035028
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 2,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "7ab1c6412ea0d45f6bcb9490fe28f8dc65aa4b08",
+        "hf_repo": "rekurin/cad-bench-results",
+        "runs_prefix": "runs/mini-swe-agent/kimi-k2.7-code/"
+      },
+      "task_count": 100
+    },
+    "rekurin-mini-swe-agent-qwen3_6-27b.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.506902,
+        "combined": 0.3600789179880547,
+        "geometry_similarity": 0.3340589618985226
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 23,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "7ab1c6412ea0d45f6bcb9490fe28f8dc65aa4b08",
+        "hf_repo": "rekurin/cad-bench-results",
+        "runs_prefix": "runs/mini-swe-agent/qwen3.6-27b/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-claude-haiku-4_5.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.537764,
+        "combined": 0.35787665980784517,
+        "geometry_similarity": 0.31611609871913293
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 18,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/claude-haiku-4_5/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-codestral-2508.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.42018700000000003,
+        "combined": 0.27729163377602767,
+        "geometry_similarity": 0.2503182626018651
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 21,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/codestral-2508/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-deepseek-v3_2.yaml": {
+      "declared_exceptions": 9,
+      "metrics": {
+        "cad_spec_consistency": 0.523628,
+        "combined": 0.37867678814422084,
+        "geometry_similarity": 0.3433252112452383
+      },
+      "missing_reward_tasks": [
+        "freecad-0e9bcbd4f4",
+        "freecad-33e0cf86f9",
+        "freecad-641cfcd541",
+        "freecad-893b9137ff",
+        "freecad-9c9ce03e0f",
+        "freecad-cb6f0c2fb5",
+        "freecad-db4e2a4bcf",
+        "freecad-e74ef5c004",
+        "freecad-f67dad96d1"
+      ],
+      "missing_subscores": 26,
+      "reward_count": 91,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/deepseek-v3_2/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-devstral-2512.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.552449,
+        "combined": 0.37762079344462973,
+        "geometry_similarity": 0.34580059557133774
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 19,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/devstral-2512/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-gemini-3_1-flash-lite-preview.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.084725,
+        "combined": 0.057919092150904634,
+        "geometry_similarity": 0.051067715804912775
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 85,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/gemini-3_1-flash-lite-preview/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-llama-3_3-70b-instruct.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.149113,
+        "combined": 0.09229436448843358,
+        "geometry_similarity": 0.07860687421612927
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 78,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/llama-3_3-70b-instruct/"
+      },
+      "task_count": 100
+    },
+    "sponge-cake-allday-cadbench-freecad-agent-qwen3-coder.yaml": {
+      "declared_exceptions": 1,
+      "metrics": {
+        "cad_spec_consistency": 0.65628,
+        "combined": 0.4367830435376206,
+        "geometry_similarity": 0.387501842817697
+      },
+      "missing_reward_tasks": [
+        "freecad-eceefa2929"
+      ],
+      "missing_subscores": 7,
+      "reward_count": 99,
+      "source": {
+        "hf_commit_oid": "96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc",
+        "hf_repo": "SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs",
+        "runs_prefix": "runs/cadbench-freecad-agent/qwen3-coder/"
+      },
+      "task_count": 100
+    },
+    "xavierpeich-claude-code-claude-opus-5.yaml": {
+      "declared_exceptions": 0,
+      "metrics": {
+        "cad_spec_consistency": 0.9389360000000001,
+        "combined": 0.881451479586912,
+        "geometry_similarity": 0.8767518966894028
+      },
+      "missing_reward_tasks": [],
+      "missing_subscores": 1,
+      "reward_count": 100,
+      "source": {
+        "hf_commit_oid": "95d8d99fb772ef5524c90c8c5b81e6567579d2c9",
+        "hf_repo": "xavierpeich/cad-bench-results",
+        "runs_prefix": "runs/claude-code/claude-opus-5/"
+      },
+      "task_count": 100
+    }
+  },
+  "schema_version": 1
+}

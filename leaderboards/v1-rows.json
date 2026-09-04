@@ -1,0 +1,891 @@
+{
+  "rows": [
+    {
+      "metadata": {
+        "agent": "claude-code",
+        "agent_version": "2.1.226",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-opus-5",
+        "model_display": "claude-opus-5 (max)",
+        "reasoning_effort": "max",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/0c0bf7c0e3880c39ea20cf3a206405993a1073fe/runs/claude-code/claude-opus-5"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.9058369000143872,
+        "cost_usd": 113.24406125,
+        "display_combined": "**90.6**",
+        "display_cost": "$113.24",
+        "display_geometry": "88.9",
+        "display_spec": "97.2",
+        "exceptions": 1,
+        "geometry": 0.8888131420412451,
+        "missing_subscores": 0,
+        "spec": 0.97236,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.4.3",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "openrouter/moonshotai/kimi-k3",
+        "model_display": "kimi-k3 (max)",
+        "reasoning_effort": "max",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/a4eb46f00345670d727c29c465616d36272e7538/runs/mini-swe-agent/moonshotai-kimi-k3"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.9042551796743963,
+        "cost_usd": 63.9294593,
+        "display_combined": "**90.4**",
+        "display_cost": "$63.93",
+        "display_geometry": "88.2",
+        "display_spec": "97.7",
+        "exceptions": 0,
+        "geometry": 0.881765817722629,
+        "missing_subscores": 0,
+        "spec": 0.976904,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.4.3",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "xai/grok-4.6",
+        "model_display": "grok-4.6 (xhigh)",
+        "reasoning_effort": "xhigh",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/mini-swe-agent/grok-4.6"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.8881599885537406,
+        "cost_usd": 119.456644,
+        "display_combined": "**88.8**",
+        "display_cost": "$119.46",
+        "display_geometry": "85.2",
+        "display_spec": "97.2",
+        "exceptions": 0,
+        "geometry": 0.852443248267528,
+        "missing_subscores": 0,
+        "spec": 0.97161,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "grok-build",
+        "agent_version": "0.2.52",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "grok-4.6",
+        "model_display": "grok-4.6 (xhigh)",
+        "reasoning_effort": "xhigh",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/grok-build/grok-4.6-xhigh"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.883753853820088,
+        "cost_usd": 76.62,
+        "display_combined": "**88.4**",
+        "display_cost": "$76.62",
+        "display_geometry": "84.3",
+        "display_spec": "96.7",
+        "exceptions": 0,
+        "geometry": 0.8430799322360037,
+        "missing_subscores": 0,
+        "spec": 0.96661,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "claude-code",
+        "agent_version": "2.1.226",
+        "benchmark_tag": "v1",
+        "contributor": "xavierpeich",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-opus-5",
+        "model_display": "claude-opus-5 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/xavierpeich/cad-bench-results/tree/95d8d99fb772ef5524c90c8c5b81e6567579d2c9/runs/claude-code/claude-opus-5"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.881451479586912,
+        "cost_usd": 48.64,
+        "display_combined": "**88.1**",
+        "display_cost": "$48.64",
+        "display_geometry": "87.7",
+        "display_spec": "93.9",
+        "exceptions": 0,
+        "geometry": 0.8767518966894028,
+        "missing_subscores": 1,
+        "spec": 0.9389360000000001,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "grok-build",
+        "agent_version": "0.2.52",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "grok-4.6",
+        "model_display": "grok-4.6 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/a4eb46f00345670d727c29c465616d36272e7538/runs/grok-build/grok-4.6"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.8784073624238476,
+        "cost_usd": 69.228826,
+        "display_combined": "**87.8**",
+        "display_cost": "$69.23",
+        "display_geometry": "83.5",
+        "display_spec": "97.2",
+        "exceptions": 0,
+        "geometry": 0.8348582216000712,
+        "missing_subscores": 0,
+        "spec": 0.97161,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "codex",
+        "agent_version": "0.147.0",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "openai/gpt-5.6-sol",
+        "model_display": "gpt-5.6-sol (max)",
+        "reasoning_effort": "max",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/0c0bf7c0e3880c39ea20cf3a206405993a1073fe/runs/codex/openai-gpt-5.6-sol"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.8653398647816879,
+        "cost_usd": 97.5778385,
+        "display_combined": "**86.5**",
+        "display_cost": "$97.58",
+        "display_geometry": "84.8",
+        "display_spec": "94.3",
+        "exceptions": 0,
+        "geometry": 0.8475187837185661,
+        "missing_subscores": 0,
+        "spec": 0.942963,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "grok-build",
+        "agent_version": "0.2.52",
+        "benchmark_tag": "v1",
+        "contributor": "littlefishtank",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "grok-4.5",
+        "model_display": "grok-4.5 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/0c0bf7c0e3880c39ea20cf3a206405993a1073fe/runs/grok-build/grok-4.5"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.8370760650843765,
+        "cost_usd": 36.59,
+        "display_combined": "**83.7**",
+        "display_cost": "$36.59",
+        "display_geometry": "80.2",
+        "display_spec": "94.1",
+        "exceptions": 0,
+        "geometry": 0.8023225611480784,
+        "missing_subscores": 0,
+        "spec": 0.940637,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "codex",
+        "agent_version": "0.130.0",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "gpt-5.5",
+        "model_display": "gpt-5.5 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/codex/gpt-5.5"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.8323714354000648,
+        "cost_usd": 170.002026,
+        "display_combined": "**83.2**",
+        "display_cost": "$170.00",
+        "display_geometry": "80.8",
+        "display_spec": "93.9",
+        "exceptions": 0,
+        "geometry": 0.8076017433119175,
+        "missing_subscores": 0,
+        "spec": 0.939139,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.2.8",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "google/gemini-3.1-pro-preview",
+        "model_display": "gemini-3.1-pro-preview (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/mini-swe-agent/google-gemini-3.1-pro-preview"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.7895342223286979,
+        "cost_usd": 70.82004599999999,
+        "display_combined": "**79.0**",
+        "display_cost": "$70.82",
+        "display_geometry": "74.2",
+        "display_spec": "95.4",
+        "exceptions": 0,
+        "geometry": 0.7421177756622893,
+        "missing_subscores": 0,
+        "spec": 0.954143,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "claude-code",
+        "agent_version": "2.1.214",
+        "benchmark_tag": "v1",
+        "contributor": "ericspencer00",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-fable-5",
+        "model_display": "claude-fable-5 (low)",
+        "reasoning_effort": "low",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/EricSpencer00/cad-bench-results/tree/f6f0b75a445e244cd9b4b7de75b00a5f4e7dcf61/runs/claude-code/claude-fable-5"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.7576748483033036,
+        "cost_usd": 46.71,
+        "display_combined": "**75.8**",
+        "display_cost": "$46.71",
+        "display_geometry": "75.0",
+        "display_spec": "86.3",
+        "exceptions": 0,
+        "geometry": 0.7495918040955953,
+        "missing_subscores": 0,
+        "spec": 0.862516,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.2.8",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "gpt-5.5",
+        "model_display": "gpt-5.5 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/mini-swe-agent/gpt-5.5"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.743774685658659,
+        "cost_usd": 42.347278,
+        "display_combined": "**74.4**",
+        "display_cost": "$42.35",
+        "display_geometry": "71.4",
+        "display_spec": "89.3",
+        "exceptions": 0,
+        "geometry": 0.7140427708917191,
+        "missing_subscores": 0,
+        "spec": 0.8931,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.2.8",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-opus-4-7",
+        "model_display": "claude-opus-4-7 (max)",
+        "reasoning_effort": "max",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/mini-swe-agent/claude-opus-4-7"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.7342736609453689,
+        "cost_usd": 29.840232250000003,
+        "display_combined": "**73.4**",
+        "display_cost": "$29.84",
+        "display_geometry": "69.3",
+        "display_spec": "89.0",
+        "exceptions": 0,
+        "geometry": 0.6927299312246284,
+        "missing_subscores": 0,
+        "spec": 0.8904559999999999,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "gemini-cli",
+        "agent_version": "0.42.0",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "gemini-3.1-pro-preview",
+        "model_display": "gemini-3.1-pro-preview (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/gemini-cli/gemini-3.1-pro-preview"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.7291241381282711,
+        "cost_usd": 51.284896599999996,
+        "display_combined": "**72.9**",
+        "display_cost": "$51.28",
+        "display_geometry": "68.9",
+        "display_spec": "83.9",
+        "exceptions": 0,
+        "geometry": 0.688763133359867,
+        "missing_subscores": 7,
+        "spec": 0.8387779999999999,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "claude-code",
+        "agent_version": "2.1.140",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-opus-4-7",
+        "model_display": "claude-opus-4-7 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/claude-code/claude-opus-4-7"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.6553938312671463,
+        "cost_usd": 73.2484665,
+        "display_combined": "**65.5**",
+        "display_cost": "$73.25",
+        "display_geometry": "62.4",
+        "display_spec": "83.3",
+        "exceptions": 1,
+        "geometry": 0.6243944822563745,
+        "missing_subscores": 0,
+        "spec": 0.833267,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "claude-code",
+        "agent_version": "2.1.140",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-sonnet-4-6",
+        "model_display": "claude-sonnet-4-6 (medium)",
+        "reasoning_effort": "medium",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/claude-code/claude-sonnet-4-6"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.5176062598696327,
+        "cost_usd": 96.33733124999999,
+        "display_combined": "**51.8**",
+        "display_cost": "$96.34",
+        "display_geometry": "47.8",
+        "display_spec": "68.3",
+        "exceptions": 22,
+        "geometry": 0.47820026464600845,
+        "missing_subscores": 17,
+        "spec": 0.6830970000000001,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.4.3",
+        "benchmark_tag": "v1",
+        "contributor": "rekurin",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "moonshotai/kimi-k2.7-code",
+        "model_display": "kimi-k2.7-code",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/rekurin/cad-bench-results/tree/7ab1c6412ea0d45f6bcb9490fe28f8dc65aa4b08/runs/mini-swe-agent/kimi-k2.7-code"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.514702413463829,
+        "cost_usd": 10.6804436804,
+        "display_combined": "**51.5**",
+        "display_cost": "$10.68",
+        "display_geometry": "48.0",
+        "display_spec": "68.8",
+        "exceptions": 0,
+        "geometry": 0.4799050077035028,
+        "missing_subscores": 2,
+        "spec": 0.688257,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "qwen/qwen3-coder",
+        "model_display": "qwen3-coder",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/qwen3-coder"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.4367830435376206,
+        "cost_usd": 0.33834796499999986,
+        "display_combined": "**43.7**",
+        "display_cost": "$0.34",
+        "display_geometry": "38.8",
+        "display_spec": "65.6",
+        "exceptions": 1,
+        "geometry": 0.387501842817697,
+        "missing_subscores": 7,
+        "spec": 0.65628,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "deepseek/deepseek-v3.2",
+        "model_display": "deepseek-v3.2",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/deepseek-v3_2"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.37867678814422084,
+        "cost_usd": 0.23320248889999992,
+        "display_combined": "**37.9**",
+        "display_cost": "$0.23",
+        "display_geometry": "34.3",
+        "display_spec": "52.4",
+        "exceptions": 9,
+        "geometry": 0.3433252112452383,
+        "missing_subscores": 26,
+        "spec": 0.523628,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "mistralai/devstral-2512",
+        "model_display": "devstral-2512",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/devstral-2512"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.37762079344462973,
+        "cost_usd": 0.45887015999999986,
+        "display_combined": "**37.8**",
+        "display_cost": "$0.46",
+        "display_geometry": "34.6",
+        "display_spec": "55.2",
+        "exceptions": 0,
+        "geometry": 0.34580059557133774,
+        "missing_subscores": 19,
+        "spec": 0.552449,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.4.3",
+        "benchmark_tag": "v1",
+        "contributor": "rekurin",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "qwen/qwen3.6-27b",
+        "model_display": "qwen3.6-27b",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/rekurin/cad-bench-results/tree/7ab1c6412ea0d45f6bcb9490fe28f8dc65aa4b08/runs/mini-swe-agent/qwen3.6-27b"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.3600789179880547,
+        "cost_usd": 7.7549417192,
+        "display_combined": "**36.0**",
+        "display_cost": "$7.75",
+        "display_geometry": "33.4",
+        "display_spec": "50.7",
+        "exceptions": 0,
+        "geometry": 0.3340589618985226,
+        "missing_subscores": 23,
+        "spec": 0.506902,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "anthropic/claude-haiku-4.5",
+        "model_display": "claude-haiku-4.5",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/claude-haiku-4_5"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.35787665980784517,
+        "cost_usd": 2.728765,
+        "display_combined": "**35.8**",
+        "display_cost": "$2.73",
+        "display_geometry": "31.6",
+        "display_spec": "53.8",
+        "exceptions": 0,
+        "geometry": 0.31611609871913293,
+        "missing_subscores": 18,
+        "spec": 0.537764,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "claude-code",
+        "agent_version": "2.1.140",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "claude-haiku-4-5",
+        "model_display": "claude-haiku-4-5 (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/claude-code/claude-haiku-4-5"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.2839017282257205,
+        "cost_usd": 24.671451700000002,
+        "display_combined": "**28.4**",
+        "display_cost": "$24.67",
+        "display_geometry": "23.3",
+        "display_spec": "54.1",
+        "exceptions": 8,
+        "geometry": 0.23263581769208488,
+        "missing_subscores": 3,
+        "spec": 0.5407,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "mistralai/codestral-2508",
+        "model_display": "codestral-2508",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/codestral-2508"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.27729163377602767,
+        "cost_usd": 0.24400613999999998,
+        "display_combined": "**27.7**",
+        "display_cost": "$0.24",
+        "display_geometry": "25.0",
+        "display_spec": "42.0",
+        "exceptions": 0,
+        "geometry": 0.2503182626018651,
+        "missing_subscores": 21,
+        "spec": 0.42018700000000003,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "mini-swe-agent",
+        "agent_version": "2.2.8",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "google/gemini-3.1-flash-lite-preview",
+        "model_display": "gemini-3.1-flash-lite-preview (minimal)",
+        "reasoning_effort": "minimal",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/mini-swe-agent/google-gemini-3.1-flash-lite-preview"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.24128197420290576,
+        "cost_usd": 3.00219475,
+        "display_combined": "**24.1**",
+        "display_cost": "$3.00",
+        "display_geometry": "19.6",
+        "display_spec": "47.6",
+        "exceptions": 0,
+        "geometry": 0.19572042670946488,
+        "missing_subscores": 0,
+        "spec": 0.476012,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "gemini-cli",
+        "agent_version": "0.42.0",
+        "benchmark_tag": "v1",
+        "contributor": "gnucleus-ai",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "gemini-3.1-flash-lite-preview",
+        "model_display": "gemini-3.1-flash-lite-preview (high)",
+        "reasoning_effort": "high",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/gnucleus-ai/cad-gen-freecad-bench/tree/9bfc0b77fca5863ad573f41544f2033bde0a1862/runs/gemini-cli/gemini-3.1-flash-lite-preview"
+        },
+        "submission_type": "baseline"
+      },
+      "metrics": {
+        "combined": 0.1191557709803952,
+        "cost_usd": 7.628549974999999,
+        "display_combined": "**11.9**",
+        "display_cost": "$7.63",
+        "display_geometry": "10.0",
+        "display_spec": "24.2",
+        "exceptions": 0,
+        "geometry": 0.10009470615761319,
+        "missing_subscores": 36,
+        "spec": 0.24189699999999997,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "meta-llama/llama-3.3-70b-instruct",
+        "model_display": "llama-3.3-70b-instruct",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/llama-3_3-70b-instruct"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.09229436448843358,
+        "cost_usd": 0.15374339699999998,
+        "display_combined": "**9.2**",
+        "display_cost": "$0.15",
+        "display_geometry": "7.9",
+        "display_spec": "14.9",
+        "exceptions": 0,
+        "geometry": 0.07860687421612927,
+        "missing_subscores": 78,
+        "spec": 0.149113,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    },
+    {
+      "metadata": {
+        "agent": "cadbench-freecad-agent",
+        "agent_version": "0.1.0-initial",
+        "benchmark_tag": "v1",
+        "contributor": "sponge-cake-allday",
+        "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+        "model": "google/gemini-3.1-flash-lite-preview",
+        "model_display": "gemini-3.1-flash-lite-preview",
+        "source": {
+          "label": "Pinned public results",
+          "url": "https://huggingface.co/datasets/SpongeCakeAllDay/cad-bench-freecad-agent-initial-runs/tree/96d52ab2ee7be48f52d9b4f242e3b93bbc7f39bc/runs/cadbench-freecad-agent/gemini-3_1-flash-lite-preview"
+        },
+        "submission_type": "contributor"
+      },
+      "metrics": {
+        "combined": 0.057919092150904634,
+        "cost_usd": 0.49076025,
+        "display_combined": "**5.8**",
+        "display_cost": "$0.49",
+        "display_geometry": "5.1",
+        "display_spec": "8.5",
+        "exceptions": 0,
+        "geometry": 0.051067715804912775,
+        "missing_subscores": 85,
+        "spec": 0.084725,
+        "total_trials": 100
+      },
+      "status": "display",
+      "trial_ids": []
+    }
+  ]
+}
