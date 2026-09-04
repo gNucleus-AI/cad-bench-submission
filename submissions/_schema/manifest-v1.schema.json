@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/gNucleus-AI/cad-bench-submission/blob/main/submissions/_schema/manifest.schema.json",
-  "title": "Parametric CAD Bench submission manifest",
-  "description": "Pointer from this GitHub repo to a contributor's run artifacts on Hugging Face, plus self-declared summary metrics that maintainers re-derive during manual review.",
+  "$id": "https://github.com/gNucleus-AI/cad-bench-submission/blob/main/submissions/_schema/manifest-v1.schema.json",
+  "title": "Parametric CAD Bench archived v1 submission manifest",
+  "description": "Frozen schema for accepted v1 manifests. v1 no longer accepts submissions.",
   "type": "object",
   "additionalProperties": false,
   "required": ["schema_version", "submission", "contributor", "bench", "agent", "model", "results", "declared"],
@@ -10,7 +10,7 @@
     "schema_version": {
       "type": "integer",
       "const": 1,
-      "description": "Manifest schema version. Bump only via PR to manifest.schema.json."
+      "description": "Frozen v1 manifest schema version."
     },
     "submission": {
       "type": "object",
@@ -62,7 +62,7 @@
         "tag": {
           "type": "string",
           "enum": ["v1"],
-          "description": "Currently only v1 accepted. Future versions extend this enum."
+          "description": "Archived CAD-Bench version."
         }
       }
     },

@@ -1,0 +1,18 @@
+[project]
+name = "cad-bench-submission-tools"
+version = "0.1.0"
+description = "Validation tools for Parametric CAD Bench submissions"
+requires-python = ">=3.11"
+dependencies = [
+  "jsonschema[format]>=4.23,<5",
+  "pyyaml>=6,<7",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,65 @@
+# Parametric CAD Bench — example submission manifest.
+#
+# Copy this file to:
+#   submissions/v2/<your-github-handle>-<agent>-<model>.yaml
+#
+# Validated against submissions/_schema/manifest-v2.schema.json by a
+# maintainer on every PR. Anything we re-derive (mean_composite,
+# cost_usd) is checked against your declared values — mismatches fail
+# the PR.
+
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-09-03"
+
+contributor:
+  handle: "octocat"
+  org: "Example Robotics"            # optional
+  email: "octocat@example.com"       # optional
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v2"
+  # Exact immutable digest resolved from gnucleus-ai/cad-bench@v2.
+  dataset_content_hash: "sha256:ab2e040d0adcfd2779b4f1ad554890cd98b5aa19845e00162933ba165144fe56"
+
+agent:
+  name: "codex"                      # short slug
+  version: "1.4.2"
+  reasoning_effort: "max"
+  import_path: ""                    # optional, for custom Harbor adapters
+
+model:
+  id: "openai/gpt-5.5"               # LiteLLM-style id used by your runner
+  endpoint: ""                       # optional, only if non-default
+
+results:
+  # These jobs must be publicly readable. Multiple jobs are allowed when they
+  # contribute trials for the same exact agent/model/reasoning tuple.
+  source_jobs:
+    - "https://hub.harborframework.com/jobs/01234567-89ab-cdef-0123-456789abcdef"
+  source_filter:
+    agent: "codex"
+    agent_version: "1.4.2"
+    model: "openai/gpt-5.5"
+    reasoning_effort: "max"
+  # Optional redundant archive. Harbor source_jobs remain authoritative.
+  hf_archive:
+    repo: "octocat/cad-bench-results"
+    commit_oid: "0123456789abcdef0123456789abcdef01234567"
+    runs_prefix: "runs/codex/openai-gpt-5_5/"
+
+declared:
+  mean_composite: 0.832
+  mean_geometry_similarity: 0.820
+  mean_cad_spec_consistency: 0.845
+  trials_per_task: 8
+  total_trials: 800
+  exceptions: 0
+  cost_usd: 170.00                   # optional; maintainers re-derive from token counts
+
+notes: |
+  Ran on 2026-09-02 against gnucleus-ai/cad-bench@v2. Codex was set to
+  reasoning_effort=max with 32K max output tokens. No harness patches.

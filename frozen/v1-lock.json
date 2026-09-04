@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-09-03",
+  "files": {
+    "baselines/v1.json": "0574b7c537ff27e6c1e561c954c490c29c56a9feb1e866f9f4e3b0075e7cc2d3",
+    "benchmarks/v1.json": "ecdfc00e9f278b72a6a2698f247f8fb30c625d44e9b897de9bf4162a46dfc7d0",
+    "submissions/_schema/manifest-v1.schema.json": "aa667db6c7fc9a0b7e63559d081dfc0eb5bed989f8875de241772e7ab6642978",
+    "submissions/v1/.frozen": "46d16761511326c8bb60a6698d9232fcb02755cc1f2afcc7b0cc60b511413d23",
+    "submissions/v1/README.md": "f85960959a62a428fe087343daadc9ffade5aeec4e23db495419aa8c52caa6ba",
+    "submissions/v1/ericspencer00-claude-code-claude-fable-5.yaml": "ad654e68132eaf67fd34035afb8180bd462188c4a46dd78e969c1bd8cf2223e8",
+    "submissions/v1/littlefishtank-claude-code-claude-opus-5.yaml": "4a5dd79d78a98565d971acac9594811e37ab6a137776d27f4ecc09b1c9d6b37e",
+    "submissions/v1/littlefishtank-codex-gpt-5.6-sol.yaml": "5d4f4e7a30a7aa87b79fcbabcdb87c0037b6789ff40f6aff587e48701ff4cb08",
+    "submissions/v1/littlefishtank-grok-build-grok-4.5.yaml": "0f0a540ddabf0b0decda8e5dd265d1fa5bfd84af108da1634def75e32675eb61",
+    "submissions/v1/littlefishtank-grok-build-grok-4.6-xhigh.yaml": "2c597855fc19a7da04b9851057c004672fd815d077e6af0e5fbdfcc2e73ed4c7",
+    "submissions/v1/littlefishtank-grok-build-grok-4.6.yaml": "88e39c19dd817e752c212ce4e66a5629286d39f7088d8dcd82a8d80033ddfbfc",
+    "submissions/v1/littlefishtank-mini-swe-agent-grok-4.6-xhigh.yaml": "a4723fee7b79a83681842087df135bf45c1973b424b333bdebe76604e1ea2afa",
+    "submissions/v1/littlefishtank-mini-swe-agent-kimi-k3.yaml": "0ce880214fcdd386f35d976583c5b870daf365042760f2a322be7ae0dccd65b9",
+    "submissions/v1/rekurin-mini-swe-agent-kimi-k2_7-code.yaml": "933f4da6bbc45962030af31d75b68730734d552ba4511adf8e1bca1793681a94",
+    "submissions/v1/rekurin-mini-swe-agent-qwen3_6-27b.yaml": "a20a99b160e141e5b225dfab91e2347441277c0b8f1134a508f59ca8489df009",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-claude-haiku-4_5.yaml": "99367a37d15e8920ce1f8ad1ce6ea712d6253be3d51a7d06422de938a23dc3dc",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-codestral-2508.yaml": "fd380b299fe81b1c0995d31e1668767f52d7f5c66882c8381a2987285af4d8b8",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-deepseek-v3_2.yaml": "5bbbd9161b085a6e8d4d2d2a4424c4c52d135bb64cd5bcc80327af2cc12d60a8",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-devstral-2512.yaml": "cecd6dcfb2a3988474a995af4fb158ff078eef4073ecda015a2c21946d4f1162",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-gemini-3_1-flash-lite-preview.yaml": "19e583aebfe113721b32959ccb0ca0d391a55d7215420afae7e4eb270af05e1d",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-llama-3_3-70b-instruct.yaml": "58b2f4ad23a542a644a6fd8f372fcc0772d47c7ae90a844efce507b9b880db65",
+    "submissions/v1/sponge-cake-allday-cadbench-freecad-agent-qwen3-coder.yaml": "6b769e7db65b55913d7d7576c17fc18c8aec235e209f928f2133e5dc11bbfb78",
+    "submissions/v1/xavierpeich-claude-code-claude-opus-5.yaml": "4dd62be63318506499b05860029d4b5a61bd514bff3a39c034afe78d518265ac"
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "description": "Frozen first-party v1 matrix runs. These are benchmark baselines, not contributor submissions.",
+  "bench": {
+    "dataset": "gnucleus-ai/cad-bench",
+    "tag": "v1",
+    "dataset_content_hash": "sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e",
+    "leaderboard": "v1"
+  },
+  "source": {
+    "hf_repo": "gnucleus-ai/cad-gen-freecad-bench",
+    "hf_commit_oid": "9bfc0b77fca5863ad573f41544f2033bde0a1862",
+    "summary_path": "data/cad-bench-v1.parquet",
+    "summary_sha256": "08d5048d30bd6a88d9bbbe6ba1ad035438291179d7e2bdce6dd686aa7a523966"
+  },
+  "aggregation": {
+    "task_count": 100,
+    "trials_per_task": 1,
+    "missing_or_failed_scores": 0,
+    "display": "percentage rounded to one decimal place",
+    "reasoning_labels": "Frozen leaderboard labels. reasoning_effort_explicit=false means the legacy runner did not pass an explicit reasoning parameter."
+  },
+  "rows": [
+    {
+      "cell": "codex-gpt5.5",
+      "job_id": "codex-gpt5.5-20260513-031208",
+      "agent": {"name": "codex", "version": "0.130.0"},
+      "model": {"id": "gpt-5.5", "provider": "openai"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": true,
+      "runs_prefix": "runs/codex/gpt-5.5/",
+      "metrics": {"geometry": 0.8076017433119175, "spec": 0.939139, "combined": 0.8323714354000648, "cost_usd": 170.002026},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 0
+    },
+    {
+      "cell": "mini-swe-gemini-pro",
+      "job_id": "mini-swe-gemini-pro-20260513-050311",
+      "agent": {"name": "mini-swe-agent", "version": "2.2.8"},
+      "model": {"id": "google/gemini-3.1-pro-preview", "provider": "vertex_ai_openai_compat"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": false,
+      "runs_prefix": "runs/mini-swe-agent/google-gemini-3.1-pro-preview/",
+      "metrics": {"geometry": 0.7421177756622893, "spec": 0.954143, "combined": 0.7895342223286979, "cost_usd": 70.82004599999999},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 0
+    },
+    {
+      "cell": "mini-swe-gpt5.5",
+      "job_id": "mini-swe-gpt5.5-20260513-054120",
+      "agent": {"name": "mini-swe-agent", "version": "2.2.8"},
+      "model": {"id": "gpt-5.5", "provider": "openai"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": false,
+      "runs_prefix": "runs/mini-swe-agent/gpt-5.5/",
+      "metrics": {"geometry": 0.7140427708917191, "spec": 0.8931, "combined": 0.743774685658659, "cost_usd": 42.347278},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 0
+    },
+    {
+      "cell": "mini-swe-claude-opus",
+      "job_id": "mini-swe-claude-opus-20260513-040806",
+      "agent": {"name": "mini-swe-agent", "version": "2.2.8"},
+      "model": {"id": "claude-opus-4-7", "provider": "anthropic"},
+      "leaderboard_reasoning_label": "max",
+      "reasoning_effort_explicit": false,
+      "runs_prefix": "runs/mini-swe-agent/claude-opus-4-7/",
+      "metrics": {"geometry": 0.6927299312246284, "spec": 0.8904559999999999, "combined": 0.7342736609453689, "cost_usd": 29.840232250000003},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 0
+    },
+    {
+      "cell": "gemini-cli-pro",
+      "job_id": "gemini-cli-pro-20260513-063900",
+      "agent": {"name": "gemini-cli", "version": "0.42.0"},
+      "model": {"id": "gemini-3.1-pro-preview", "provider": "vertex_ai"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": true,
+      "runs_prefix": "runs/gemini-cli/gemini-3.1-pro-preview/",
+      "metrics": {"geometry": 0.688763133359867, "spec": 0.8387779999999999, "combined": 0.7291241381282711, "cost_usd": 51.284896599999996},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 7
+    },
+    {
+      "cell": "claude-code-opus",
+      "job_id": "claude-code-opus-20260513-005716",
+      "agent": {"name": "claude-code", "version": "2.1.140"},
+      "model": {"id": "claude-opus-4-7", "provider": "anthropic"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": true,
+      "runs_prefix": "runs/claude-code/claude-opus-4-7/",
+      "metrics": {"geometry": 0.6243944822563745, "spec": 0.833267, "combined": 0.6553938312671463, "cost_usd": 73.2484665},
+      "trials": 100,
+      "exceptions": 1,
+      "missing_subscores": 0
+    },
+    {
+      "cell": "claude-code-sonnet",
+      "job_id": "claude-code-sonnet-20260513-013541",
+      "agent": {"name": "claude-code", "version": "2.1.140"},
+      "model": {"id": "claude-sonnet-4-6", "provider": "anthropic"},
+      "leaderboard_reasoning_label": "medium",
+      "reasoning_effort_explicit": true,
+      "runs_prefix": "runs/claude-code/claude-sonnet-4-6/",
+      "metrics": {"geometry": 0.47820026464600845, "spec": 0.6830970000000001, "combined": 0.5176062598696327, "cost_usd": 96.33733124999999},
+      "trials": 100,
+      "exceptions": 22,
+      "missing_subscores": 17
+    },
+    {
+      "cell": "claude-code-haiku",
+      "job_id": "claude-code-haiku-20260513-003457",
+      "agent": {"name": "claude-code", "version": "2.1.140"},
+      "model": {"id": "claude-haiku-4-5", "provider": "anthropic"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": true,
+      "runs_prefix": "runs/claude-code/claude-haiku-4-5/",
+      "metrics": {"geometry": 0.23263581769208488, "spec": 0.5407, "combined": 0.2839017282257205, "cost_usd": 24.671451700000002},
+      "trials": 100,
+      "exceptions": 8,
+      "missing_subscores": 3
+    },
+    {
+      "cell": "mini-swe-gemini-flash",
+      "job_id": "mini-swe-gemini-flash-20260513-043932",
+      "agent": {"name": "mini-swe-agent", "version": "2.2.8"},
+      "model": {"id": "google/gemini-3.1-flash-lite-preview", "provider": "vertex_ai_openai_compat"},
+      "leaderboard_reasoning_label": "minimal",
+      "reasoning_effort_explicit": false,
+      "runs_prefix": "runs/mini-swe-agent/google-gemini-3.1-flash-lite-preview/",
+      "metrics": {"geometry": 0.19572042670946488, "spec": 0.476012, "combined": 0.24128197420290576, "cost_usd": 3.00219475},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 0
+    },
+    {
+      "cell": "gemini-cli-flash",
+      "job_id": "gemini-cli-flash-20260513-061727",
+      "agent": {"name": "gemini-cli", "version": "0.42.0"},
+      "model": {"id": "gemini-3.1-flash-lite-preview", "provider": "vertex_ai"},
+      "leaderboard_reasoning_label": "high",
+      "reasoning_effort_explicit": true,
+      "runs_prefix": "runs/gemini-cli/gemini-3.1-flash-lite-preview/",
+      "metrics": {"geometry": 0.10009470615761319, "spec": 0.24189699999999997, "combined": 0.1191557709803952, "cost_usd": 7.628549974999999},
+      "trials": 100,
+      "exceptions": 0,
+      "missing_subscores": 36
+    }
+  ]
+}
