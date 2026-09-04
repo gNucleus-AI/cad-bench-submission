@@ -45,7 +45,10 @@ def test_non_yaml_file_cannot_bypass_freeze_lock(tmp_path) -> None:
         encoding="utf-8",
     )
 
-    issues = freeze.check_tree(root=tmp_path)
+    issues = freeze.check_tree(
+        root=tmp_path,
+        lock_path=lock_dir / "v1-lock.json",
+    )
     assert issues == [
         "unlocked file added to frozen v1 archive: submissions/v1/notes.md"
     ]

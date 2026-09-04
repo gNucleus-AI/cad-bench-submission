@@ -85,6 +85,11 @@ pull requests and the **Validate submissions** status check, and must disallow
 direct pushes that bypass required checks. The checksum lock also detects local
 or accidental drift in the archived files.
 
+The reviewed Harbor import definition, 28-row snapshot, public-source metric
+provenance, and operator commands are documented under
+[`leaderboards/`](leaderboards/README.md). They use a separate checksum lock so
+the original frozen v1 inputs remain unchanged.
+
 ## Related
 
 - **Tasks**: [`gnucleus-ai/cad-bench`](https://hub.harborframework.com/datasets/gnucleus-ai/cad-bench) (`v1` historical, `v2` current)

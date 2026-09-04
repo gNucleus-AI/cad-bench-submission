@@ -1,0 +1,163 @@
+# Harbor Hub leaderboard definition for the frozen CAD-Bench v1 results.
+#
+# Create this leaderboard privately with:
+#   harbor hub leaderboard create \
+#     --config leaderboards/v1.yaml \
+#     --rows leaderboards/v1-rows.json \
+#     --json
+package: gnucleus-ai/cad-bench
+name: v1
+title: CAD-Bench v1
+description: >
+  Frozen CAD-Bench v1 leaderboard. New v1 submissions are closed.
+  Results are preserved from the original 100-task FreeCAD 0.21.2 benchmark.
+visibility: private
+
+metadata_schema:
+  type: object
+  required:
+    - model
+    - model_display
+    - agent
+    - agent_version
+    - contributor
+    - submission_type
+    - benchmark_tag
+    - dataset_content_hash
+    - source
+  properties:
+    model:
+      type: string
+    model_display:
+      type: string
+    agent:
+      type: string
+    agent_version:
+      type: string
+    reasoning_effort:
+      type: string
+    contributor:
+      type: string
+    submission_type:
+      type: string
+      enum:
+        - baseline
+        - contributor
+    benchmark_tag:
+      type: string
+      const: v1
+    dataset_content_hash:
+      type: string
+      const: sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e
+    source:
+      type: object
+      required:
+        - url
+        - label
+      properties:
+        url:
+          type: string
+          format: uri
+        label:
+          type: string
+      additionalProperties: false
+  additionalProperties: false
+
+metrics_schema:
+  type: object
+  required:
+    - geometry
+    - display_geometry
+    - spec
+    - display_spec
+    - combined
+    - display_combined
+    - cost_usd
+    - display_cost
+    - total_trials
+    - exceptions
+    - missing_subscores
+  properties:
+    geometry:
+      type: number
+      minimum: 0
+      maximum: 1
+    display_geometry:
+      type: string
+    spec:
+      type: number
+      minimum: 0
+      maximum: 1
+    display_spec:
+      type: string
+    combined:
+      type: number
+      minimum: 0
+      maximum: 1
+    display_combined:
+      type: string
+    cost_usd:
+      type: number
+      minimum: 0
+    display_cost:
+      type: string
+    total_trials:
+      type: integer
+      minimum: 1
+    exceptions:
+      type: integer
+      minimum: 0
+    missing_subscores:
+      type: integer
+      minimum: 0
+  additionalProperties: false
+
+columns:
+  - id: model
+    header: Model
+    accessor: metadata.model
+    type: text
+    display_accessor: metadata.model_display
+    display_type: text
+
+  - id: agent
+    header: Agent
+    accessor: metadata.agent
+    type: text
+
+  - id: geometry
+    header: Geometry
+    accessor: metrics.geometry
+    type: number
+    display_accessor: metrics.display_geometry
+    display_type: text
+    align: right
+
+  - id: spec
+    header: Spec
+    accessor: metrics.spec
+    type: number
+    display_accessor: metrics.display_spec
+    display_type: text
+    align: right
+
+  - id: combined
+    header: Overall
+    accessor: metrics.combined
+    type: number
+    display_accessor: metrics.display_combined
+    display_type: markdown
+    align: right
+
+  - id: cost
+    header: Cost
+    accessor: metrics.cost_usd
+    type: number
+    display_accessor: metrics.display_cost
+    display_type: text
+    align: right
+
+rank_by:
+  - accessor: metrics.combined
+    direction: desc
+    nulls: last
