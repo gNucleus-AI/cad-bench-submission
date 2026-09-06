@@ -5,7 +5,7 @@ leaderboards on Harbor Hub.
 
 ## Frozen v1
 
-- `v1.yaml` defines the private-first Harbor leaderboard.
+- `v1.yaml` defines the public Harbor leaderboard bound to dataset revision `v1`.
 - `v1-rows.json` contains the 10 frozen first-party baselines and 18 accepted
   contributor rows.
 - `v1-source-metrics.json` records the per-axis aggregates re-derived from each
@@ -25,7 +25,7 @@ To reproduce the generated JSON from those public artifacts before the freeze:
 uv run python -m cad_bench_submission.build_v1_leaderboard
 ```
 
-After review and merge, create the leaderboard privately:
+To create the leaderboard from this snapshot:
 
 ```bash
 harbor hub leaderboard create \
@@ -34,16 +34,19 @@ harbor hub leaderboard create \
   --json
 ```
 
-Verify all 28 rows before changing visibility:
+To synchronize the existing public leaderboard definition and rows:
+
+```bash
+harbor hub leaderboard update \
+  gnucleus-ai/cad-bench/v1 \
+  --config leaderboards/v1.yaml \
+  --rows leaderboards/v1-rows.json \
+  --json
+```
+
+Verify all 28 rows:
 
 ```bash
 harbor hub leaderboard show gnucleus-ai/cad-bench/v1
 harbor hub leaderboard row list gnucleus-ai/cad-bench/v1 --limit 100
-
-harbor hub leaderboard update \
-  gnucleus-ai/cad-bench/v1 \
-  --visibility public \
-  --dry-run
 ```
-
-The final non-dry-run visibility update is a manual maintainer operation.

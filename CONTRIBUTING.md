@@ -112,7 +112,7 @@ A maintainer reviews each PR by hand:
    the model's published price; the re-derived number is what lands on
    the leaderboard (we don't propagate your declared `cost_usd`).
 8. **Merge** — once everything checks out, the manifest lands on `main` and is
-   routed to the current Harbor `main` leaderboard.
+   routed to the current Harbor `v2` leaderboard.
 
 Turnaround is bounded by maintainer availability — typically a few
 days. Open a draft PR if you'd like an early sanity check before

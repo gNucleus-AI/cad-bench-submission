@@ -28,11 +28,13 @@ def _source_metrics() -> dict:
     )
 
 
-def test_v1_leaderboard_definition_is_private_first() -> None:
+def test_v1_leaderboard_definition_matches_public_v1() -> None:
     definition = _definition()
     assert definition["package"] == "gnucleus-ai/cad-bench"
     assert definition["name"] == "v1"
-    assert definition["visibility"] == "private"
+    assert definition["title"] == "Parametric CAD Bench v1"
+    assert definition["visibility"] == "public"
+    assert definition["dataset_version_refs"] == ["v1"]
     assert definition["metadata_schema"]["properties"]["dataset_content_hash"][
         "const"
     ] == DATASET_HASH

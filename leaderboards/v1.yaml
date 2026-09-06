@@ -1,17 +1,19 @@
 # Harbor Hub leaderboard definition for the frozen CAD-Bench v1 results.
 #
-# Create this leaderboard privately with:
+# Create this public leaderboard with:
 #   harbor hub leaderboard create \
 #     --config leaderboards/v1.yaml \
 #     --rows leaderboards/v1-rows.json \
 #     --json
 package: gnucleus-ai/cad-bench
 name: v1
-title: CAD-Bench v1
+title: Parametric CAD Bench v1
 description: >
   Frozen CAD-Bench v1 leaderboard. New v1 submissions are closed.
   Results are preserved from the original 100-task FreeCAD 0.21.2 benchmark.
-visibility: private
+visibility: public
+dataset_version_refs:
+  - v1
 
 metadata_schema:
   type: object

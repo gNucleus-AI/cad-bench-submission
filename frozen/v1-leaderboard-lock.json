@@ -4,7 +4,7 @@
   "files": {
     "cad_bench_submission/build_v1_leaderboard.py": "6646b484f771f7cbd29cdd443bddffa375bc07ef0ea741091919e65663679f6f",
     "leaderboards/v1.frozen": "1018587c263e950936e6336f62acae65499e001341857bf3df6c9fef59db760c",
-    "leaderboards/v1.yaml": "7e9f085210758a377fef785a8c37bec7b71467aacbe897b75e348fd57f68f057",
+    "leaderboards/v1.yaml": "60c32d8caf24cf53ef80633456da7555080086f50be5f574bf888be1940c45f1",
     "leaderboards/v1-rows.json": "aa3fa18f99c2751860ffd5bf7166bb62eb0f3cd8ad198e1cd3daa2f50332fb06",
     "leaderboards/v1-source-metrics.json": "3319e8235271cee3756dd91b03eb73811f562ab750db667187669cae23b6f918"
   }
