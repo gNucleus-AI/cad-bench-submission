@@ -54,6 +54,52 @@ def test_non_yaml_file_cannot_bypass_freeze_lock(tmp_path) -> None:
     ]
 
 
+def test_exact_v1_definition_migration_does_not_thaw_other_content() -> None:
+    definition_path = freeze.V1_LEADERBOARD_DEFINITION_PATH
+    base_definition = (
+        b"# Create this leaderboard privately with:\n"
+        b"name: v1\n"
+        b"title: CAD-Bench v1\n"
+        b"visibility: private\n\n"
+        b"metadata_schema:\n"
+    )
+    current_definition = (
+        b"# Create this public leaderboard with:\n"
+        b"name: v1\n"
+        b"title: Parametric CAD Bench v1\n"
+        b"visibility: public\n"
+        b"dataset_version_refs:\n"
+        b"  - v1\n\n"
+        b"metadata_schema:\n"
+    )
+    base_lock = {"files": {definition_path: "old-digest", "rows": "unchanged"}}
+    current_lock = {
+        "files": {
+            definition_path: hashlib.sha256(current_definition).hexdigest(),
+            "rows": "unchanged",
+        }
+    }
+
+    assert freeze._is_exact_v1_definition_migration(
+        base_definition, current_definition, base_lock, current_lock
+    )
+    assert not freeze._is_exact_v1_definition_migration(
+        base_definition,
+        current_definition + b"description: changed\n",
+        base_lock,
+        current_lock,
+    )
+
+    changed_lock = json.loads(json.dumps(current_lock))
+    changed_lock["files"]["rows"] = "changed"
+    assert not freeze._is_exact_v1_definition_migration(
+        base_definition, current_definition, base_lock, changed_lock
+    )
+    assert not freeze._is_exact_v1_definition_migration(
+        current_definition, current_definition, current_lock, current_lock
+    )
+
+
 def test_first_party_v1_baselines_are_complete() -> None:
     path = REPOSITORY_ROOT / "baselines" / "v1.json"
     data = json.loads(path.read_text(encoding="utf-8"))

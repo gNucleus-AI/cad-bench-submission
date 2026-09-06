@@ -78,7 +78,7 @@ The v1 leaderboard is immutable. It is assembled from two frozen sources:
 These are deliberately separate: a benchmark-owner matrix run is not a
 contributor submission. New or updated v1 manifests are rejected by CI. The
 `v1` leaderboard is imported once, while accepted v2 manifests feed the Harbor
-`main` leaderboard.
+`v2` leaderboard.
 
 For this freeze to be enforceable, the GitHub `main` branch ruleset must require
 pull requests and the **Validate submissions** status check, and must disallow
