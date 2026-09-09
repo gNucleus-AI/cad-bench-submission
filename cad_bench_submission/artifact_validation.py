@@ -172,9 +172,7 @@ def audit_artifacts(
         )
 
     task_counts: Counter[str] = Counter()
-    composite_scores: list[float] = []
-    geometry_scores: list[float] = []
-    spec_scores: list[float] = []
+    reward_scores: list[float] = []
     exception_count = 0
 
     for result_path in result_paths:
@@ -186,9 +184,7 @@ def audit_artifacts(
         except (OSError, ValueError, json.JSONDecodeError) as error:
             issues.append(f"{result_path}: invalid JSON object: {error}")
             exception_count += 1
-            composite_scores.append(0.0)
-            geometry_scores.append(0.0)
-            spec_scores.append(0.0)
+            reward_scores.append(0.0)
             continue
         try:
             config = _load_json(config_path)
@@ -243,9 +239,7 @@ def audit_artifacts(
 
         if has_exception:
             exception_count += 1
-            composite_scores.append(0.0)
-            geometry_scores.append(0.0)
-            spec_scores.append(0.0)
+            reward_scores.append(0.0)
             continue
 
         assert score is not None
@@ -292,9 +286,7 @@ def audit_artifacts(
         if score > 0 and answer_py is None:
             issues.append(f"{label}: positive-scoring trial is missing answer.py")
 
-        composite_scores.append(score)
-        geometry_scores.append(detail_values.get("geometry_similarity", 0.0))
-        spec_scores.append(detail_values.get("cad_spec_consistency", 0.0))
+        reward_scores.append(score)
 
     trials_per_task = declared["trials_per_task"]
     missing = sorted(set(expected_tasks) - set(task_counts))
@@ -324,12 +316,12 @@ def audit_artifacts(
                 f"audited {actual:.8f}"
             )
 
-    compare_mean("mean_composite", composite_scores)
-    compare_mean("mean_geometry_similarity", geometry_scores)
-    compare_mean("mean_cad_spec_consistency", spec_scores)
-    if exception_count != declared["exceptions"]:
+    mean_field = "mean_reward" if policy["tag"] == "v2" else "mean_composite"
+    compare_mean(mean_field, reward_scores)
+    error_field = "n_errors" if policy["tag"] == "v2" else "exceptions"
+    if exception_count != declared[error_field]:
         issues.append(
-            f"$.declared.exceptions: declared {declared['exceptions']}, "
+            f"$.declared.{error_field}: declared {declared[error_field]}, "
             f"audited {exception_count}"
         )
     return issues

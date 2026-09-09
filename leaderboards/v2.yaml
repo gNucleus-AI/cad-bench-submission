@@ -1,0 +1,75 @@
+# Harbor Hub leaderboard definition for active Parametric CAD Bench v2 results.
+# Keep this definition synchronized with the public gnucleus-ai/cad-bench/v2
+# leaderboard before publishing contributor rows.
+package: gnucleus-ai/cad-bench
+name: v2
+title: Parametric CAD Bench v2
+description: >-
+  Held-out CAD-Bench v2 results. Ranking uses the mean continuous task reward;
+  failed or unscored trials count as zero.
+visibility: public
+dataset_version_refs:
+  - v2
+
+metadata_schema:
+  type: object
+  required: [agent_display, model_display, agent_name, model_name, reasoning_effort, agent_version, harbor_version, auth_mode, run_date, dataset_digest, config_sha256, job_display]
+  properties:
+    agent_display: &link
+      type: object
+      required: [label, url]
+      properties:
+        label: {type: string, minLength: 1}
+        url: {type: string, format: uri}
+      additionalProperties: false
+    model_display: *link
+    job_display: *link
+    agent_name: {type: string, minLength: 1}
+    model_name: {type: string, minLength: 1}
+    reasoning_effort: {type: string, minLength: 1}
+    agent_version: {type: string, minLength: 1}
+    harbor_version: {type: string, minLength: 1}
+    auth_mode: {type: string, enum: [api-key, subscription]}
+    run_date: {type: string, pattern: '^\d{4}-\d{2}-\d{2}$'}
+    dataset_digest: {type: string, pattern: '^sha256:[0-9a-f]{64}$'}
+    config_sha256: {type: string, pattern: '^[0-9a-f]{64}$'}
+  additionalProperties: false
+
+metrics_schema:
+  type: object
+  required: [mean_reward, ci95_half_width, display_score, scored_rate, display_scored_rate, perfect_rate, display_perfect_rate, n_trials, n_errors, avg_trial_duration_sec, job_wall_time_sec, known_cost_usd, cost_coverage, display_cost, known_total_tokens, token_coverage, display_tokens]
+  properties:
+    mean_reward: {type: number, minimum: 0, maximum: 1}
+    ci95_half_width: {type: number, minimum: 0}
+    display_score: {type: string}
+    scored_rate: {type: number, minimum: 0, maximum: 1}
+    display_scored_rate: {type: string}
+    perfect_rate: {type: number, minimum: 0, maximum: 1}
+    display_perfect_rate: {type: string}
+    n_trials: {type: integer, minimum: 0}
+    n_errors: {type: integer, minimum: 0}
+    avg_trial_duration_sec: {type: number, minimum: 0}
+    job_wall_time_sec: {type: number, minimum: 0}
+    known_cost_usd: {type: number, minimum: 0}
+    cost_coverage: {type: number, minimum: 0, maximum: 1}
+    display_cost: {type: string}
+    known_total_tokens: {type: integer, minimum: 0}
+    token_coverage: {type: number, minimum: 0, maximum: 1}
+    display_tokens: {type: string}
+  additionalProperties: false
+
+columns:
+  - {id: agent, header: Agent, accessor: metadata.agent_display, type: link}
+  - {id: model, header: Model, accessor: metadata.model_display, type: link}
+  - {id: effort, header: Effort, accessor: metadata.reasoning_effort, type: text}
+  - {id: score, header: Score, accessor: metrics.mean_reward, type: number, display_accessor: metrics.display_score, display_type: text, align: right}
+  - {id: scored, header: Scored, accessor: metrics.scored_rate, type: number, display_accessor: metrics.display_scored_rate, display_type: text, align: right}
+  - {id: perfect, header: Perfect, accessor: metrics.perfect_rate, type: number, display_accessor: metrics.display_perfect_rate, display_type: text, align: right}
+  - {id: avg_runtime, header: Avg sec, accessor: metrics.avg_trial_duration_sec, type: number, align: right}
+  - {id: cost, header: Known cost, accessor: metrics.known_cost_usd, type: number, display_accessor: metrics.display_cost, display_type: text, align: right}
+  - {id: date, header: Date, accessor: metadata.run_date, type: date}
+  - {id: run, header: Run, accessor: metadata.job_display, type: link}
+
+rank_by:
+  - {accessor: metrics.mean_reward, direction: desc, nulls: last}
+  - {accessor: metrics.scored_rate, direction: desc, nulls: last}

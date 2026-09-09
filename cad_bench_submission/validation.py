@@ -165,14 +165,15 @@ def validate_manifest(
                 f"got {total_trials}"
             )
 
-    exceptions = declared.get("exceptions")
+    error_field = "n_errors" if tag == "v2" else "exceptions"
+    exceptions = declared.get(error_field)
     if (
         isinstance(exceptions, int)
         and isinstance(total_trials, int)
         and exceptions > total_trials
     ):
         issues.append(
-            "$.declared.exceptions: cannot exceed "
+            f"$.declared.{error_field}: cannot exceed "
             f"total_trials ({total_trials}), got {exceptions}"
         )
 
