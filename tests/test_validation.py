@@ -17,7 +17,7 @@ from cad_bench_submission.validation import (
 @pytest.fixture
 def v2_manifest() -> dict:
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "submission": {"version": 1, "submitted_at": "2026-09-03"},
         "contributor": {"handle": "octocat"},
         "bench": {
@@ -30,10 +30,17 @@ def v2_manifest() -> dict:
         },
         "agent": {
             "name": "codex",
+            "display_name": "Codex",
+            "display_url": "https://openai.com/codex/",
             "version": "1.0.0",
             "reasoning_effort": "max",
+            "auth_mode": "api-key",
         },
-        "model": {"id": "openai/gpt-5.6-sol"},
+        "model": {
+            "id": "openai/gpt-5.6-sol",
+            "display_name": "GPT-5.6-Sol",
+            "display_url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+        },
         "results": {
             "source_jobs": [
                 "https://hub.harborframework.com/jobs/"
@@ -47,12 +54,10 @@ def v2_manifest() -> dict:
             },
         },
         "declared": {
-            "mean_composite": 0.8,
-            "mean_geometry_similarity": 0.75,
-            "mean_cad_spec_consistency": 0.9,
+            "mean_reward": 0.8,
             "trials_per_task": 1,
             "total_trials": 100,
-            "exceptions": 0,
+            "n_errors": 0,
         },
     }
 
@@ -110,11 +115,43 @@ def test_v2_requires_reasoning_effort(v2_manifest: dict) -> None:
     assert any("reasoning_effort" in issue for issue in issues)
 
 
-def test_v2_requires_structured_subscores(v2_manifest: dict) -> None:
+def test_v2_requires_mean_reward(v2_manifest: dict) -> None:
     manifest = copy.deepcopy(v2_manifest)
-    del manifest["declared"]["mean_geometry_similarity"]
+    del manifest["declared"]["mean_reward"]
     issues = validate_manifest(manifest)
-    assert any("mean_geometry_similarity" in issue for issue in issues)
+    assert any("mean_reward" in issue for issue in issues)
+
+
+def test_v2_requires_live_display_and_auth_metadata(v2_manifest: dict) -> None:
+    for section, field in (
+        ("agent", "display_name"),
+        ("agent", "display_url"),
+        ("agent", "auth_mode"),
+        ("model", "display_name"),
+        ("model", "display_url"),
+    ):
+        manifest = copy.deepcopy(v2_manifest)
+        del manifest[section][field]
+        issues = validate_manifest(manifest)
+        assert any(field in issue for issue in issues)
+
+
+def test_v2_requires_one_complete_cohort(v2_manifest: dict) -> None:
+    manifest = copy.deepcopy(v2_manifest)
+    manifest["declared"]["trials_per_task"] = 2
+    manifest["declared"]["total_trials"] = 200
+    issues = validate_manifest(manifest)
+    assert any("trials_per_task" in issue for issue in issues)
+    assert any("total_trials" in issue for issue in issues)
+
+
+def test_v2_requires_one_source_job(v2_manifest: dict) -> None:
+    manifest = copy.deepcopy(v2_manifest)
+    manifest["results"]["source_jobs"].append(
+        "https://hub.harborframework.com/jobs/11111111-1111-4111-8111-111111111111"
+    )
+    issues = validate_manifest(manifest)
+    assert any("source_jobs" in issue for issue in issues)
 
 
 def test_v2_requires_public_harbor_job_url(v2_manifest: dict) -> None:

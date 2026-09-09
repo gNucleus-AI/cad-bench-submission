@@ -5,7 +5,7 @@
   "dataset_content_hash": "sha256:ab2e040d0adcfd2779b4f1ad554890cd98b5aa19845e00162933ba165144fe56",
   "task_count": 100,
   "freecad_version": "1.1.0",
-  "leaderboard": "main",
+  "leaderboard": "v2",
   "accepting_submissions": true,
   "submission_source": {
     "type": "harbor_jobs",

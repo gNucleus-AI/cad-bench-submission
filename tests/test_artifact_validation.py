@@ -48,10 +48,8 @@ def _manifest() -> dict:
         "declared": {
             "trials_per_task": 1,
             "total_trials": 2,
-            "exceptions": 0,
-            "mean_composite": 0.75,
-            "mean_geometry_similarity": 0.7,
-            "mean_cad_spec_consistency": 0.85,
+            "n_errors": 0,
+            "mean_reward": 0.75,
         },
     }
 
@@ -127,6 +125,25 @@ def test_valid_v2_artifact_tree(tmp_path: Path) -> None:
     assert audit_artifacts(_manifest(), tmp_path, _policy()) == []
 
 
+def test_v1_mean_composite_remains_audited(tmp_path: Path) -> None:
+    _valid_snapshot(tmp_path)
+    policy = _policy()
+    policy["tag"] = "v1"
+    manifest = _manifest()
+    manifest["results"] = {"runs_prefix": "."}
+    manifest["declared"] = {
+        "trials_per_task": 1,
+        "total_trials": 2,
+        "exceptions": 0,
+        "mean_composite": 0.75,
+    }
+
+    assert audit_artifacts(manifest, tmp_path, policy) == []
+    manifest["declared"]["mean_composite"] = 0.5
+    issues = audit_artifacts(manifest, tmp_path, policy)
+    assert any("$.declared.mean_composite" in issue for issue in issues)
+
+
 def test_rejects_task_from_wrong_dataset_version(tmp_path: Path) -> None:
     _valid_snapshot(tmp_path)
     config_path = (
@@ -173,10 +190,8 @@ def test_failed_trial_counts_as_zero(tmp_path: Path) -> None:
     manifest = copy.deepcopy(_manifest())
     manifest["declared"].update(
         {
-            "exceptions": 1,
-            "mean_composite": 0.25,
-            "mean_geometry_similarity": 0.2,
-            "mean_cad_spec_consistency": 0.4,
+            "n_errors": 1,
+            "mean_reward": 0.25,
         }
     )
     assert audit_artifacts(manifest, tmp_path, _policy()) == []
@@ -199,10 +214,8 @@ def test_failed_trial_still_requires_trajectory(tmp_path: Path) -> None:
     manifest = copy.deepcopy(_manifest())
     manifest["declared"].update(
         {
-            "exceptions": 1,
-            "mean_composite": 0.25,
-            "mean_geometry_similarity": 0.2,
-            "mean_cad_spec_consistency": 0.4,
+            "n_errors": 1,
+            "mean_reward": 0.25,
         }
     )
     issues = audit_artifacts(manifest, tmp_path, _policy())

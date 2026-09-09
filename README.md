@@ -12,14 +12,14 @@ leaderboard row.
 | Bench tag | Status | Harbor leaderboard | FreeCAD |
 |---|---|---|---|
 | `v1` | Frozen; submissions closed | `v1` | 0.21.2 |
-| `v2` | Current; submissions open | `main` | 1.1.0 |
+| `v2` | Current; submissions open | `v2` | 1.1.0 |
 
 The immutable dataset IDs, content hashes, task counts, task digests, artifact
 contracts, and leaderboard routing live under [`benchmarks/`](benchmarks/).
 
 ## What gets submitted
 
-A **manifest YAML** pointing at one or more public Harbor Hub jobs. The manifest
+A **manifest YAML** pointing at one public Harbor Hub job. The manifest
 also declares the exact `(agent, agent version, model, reasoning effort)` filter
 that selects its trials. Harbor jobs are authoritative; a pinned Hugging Face
 mirror may be included as optional archival redundancy.
@@ -55,14 +55,18 @@ uv run python -m cad_bench_submission.validation path/to/submission.yaml
 uv run pytest
 ```
 
-After downloading every declared source job into one otherwise-empty directory,
-maintainers can audit the full selected cohort and its task digests with:
+After downloading the declared source job, maintainers can audit the complete
+100-task cohort and its task digests with:
 
 ```bash
 harbor job download <job-uuid> --output-dir .audit
 uv run python -m cad_bench_submission.artifact_validation \
   path/to/submission.yaml --artifacts-root .audit
 ```
+
+The audited job can then be converted into the exact live v2 leaderboard row
+schema with `cad_bench_submission.build_v2_leaderboard_row`; see
+[`leaderboards/README.md`](leaderboards/README.md#active-v2).
 
 Full contract: [CONTRIBUTING.md](CONTRIBUTING.md).
 

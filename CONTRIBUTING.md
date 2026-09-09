@@ -24,7 +24,7 @@ provides stable job/trial identities and the artifacts used to derive a row.
 jobs/
 └── <job>/
     ├── config.json                   # job-level dataset/run configuration
-    └── <trial>/                      # all 100 task IDs × trials_per_task
+    └── <trial>/                      # exactly one trial for each of 100 tasks
         ├── result.json               # timing, exception, tokens, model, job/trial IDs
         ├── config.json               # pinned task identity and digest
         ├── artifacts/app/
@@ -54,12 +54,12 @@ only for historical audit; only v2 accepts submissions.
 | Tag | Dataset content hash | Reward contract | FreeCAD | Leaderboard |
 |---|---|---|---|---|
 | `v1` (closed) | `sha256:22be8aa80fdbf2d9844e73c9d91ee7e01082d70bcf706d347216d0b97bdf862e` | `reward.json` contains `geometry_similarity`, `cad_spec_consistency`, and `combined` | 0.21.2 | `v1` |
-| `v2` (open) | `sha256:ab2e040d0adcfd2779b4f1ad554890cd98b5aa19845e00162933ba165144fe56` | `reward.json` contains the Harbor `reward`; `reward_details.json` contains the three detailed scores | 1.1.0 | `main` |
+| `v2` (open) | `sha256:ab2e040d0adcfd2779b4f1ad554890cd98b5aa19845e00162933ba165144fe56` | `reward.json` contains the Harbor `reward`; `reward_details.json` contains the three detailed scores | 1.1.0 | `v2` |
 
 The machine-readable policies under [`benchmarks/`](benchmarks/) are
 authoritative. A v2 manifest must include its exact `dataset_content_hash`,
-structured `agent.reasoning_effort`, public Harbor `source_jobs`, an exact
-`source_filter`, and all three declared mean scores.
+structured agent display and authentication metadata, one public Harbor source
+job, an exact `source_filter`, and the declared mean reward.
 
 ## What you push
 
@@ -71,8 +71,8 @@ structured `agent.reasoning_effort`, public Harbor `source_jobs`, an exact
    ```
 
    The job and every selected trial must be readable without contributor
-   credentials. Multiple source jobs are allowed only when they contribute to
-   the same exact source-filter tuple.
+   credentials. A submission is one complete 100-task Harbor job with retries
+   disabled; failed trials remain in the cohort and count as zero.
 
 2. **Optionally mirror the artifacts to Hugging Face.** If supplied, the
    manifest must pin a full commit OID. This mirror is archival redundancy;
@@ -98,7 +98,7 @@ A maintainer reviews each PR by hand:
 3. **Schema check** — validates the manifest against
    [`submissions/_schema/manifest-v2.schema.json`](submissions/_schema/manifest-v2.schema.json).
 4. **Cohort and digest check** — checks all 100 official task IDs, every trial's
-   task digest, the requested number of trials per task, and the artifact
+   task digest, exactly one trial per task, and the artifact
    contract for the selected version. Missing and failed trials count as zero.
 5. **Spot-check re-grade** — pulls a handful of `answer.FCStd` files
    from the Harbor trials and re-runs
@@ -108,11 +108,17 @@ A maintainer reviews each PR by hand:
 6. **Trajectory sanity** — eyeballs the agent log and `trajectory.json`
    (or legacy `trajectory.jsonl`) from a few representative trials to
    confirm an actual agent produced the work (not hand-authored FCStd).
-7. **Cost re-derivation** — derives USD from declared token counts ×
-   the model's published price; the re-derived number is what lands on
-   the leaderboard (we don't propagate your declared `cost_usd`).
-8. **Merge** — once everything checks out, the manifest lands on `main` and is
-   routed to the current Harbor `v2` leaderboard.
+7. **Cost audit** — uses complete cost data recorded by Harbor, or an
+   independent provider-specific audit when the agent result is incomplete.
+   The declared `cost_usd` is informational and is not copied into the row.
+8. **Build and stage** — generate a hidden row using
+   `cad_bench_submission.build_v2_leaderboard_row`, import it into
+   `gnucleus-ai/cad-bench/v2`, and verify the row and its 100 trial
+   associations.
+9. **Merge** — once everything checks out, the manifest lands on `main` as the
+   durable record for the Harbor `v2` row.
+10. **Display** — change the verified row's status from `hide` to `display`
+    only after the manifest is merged.
 
 Turnaround is bounded by maintainer availability — typically a few
 days. Open a draft PR if you'd like an early sanity check before
@@ -154,10 +160,9 @@ reputation, not from us paying your API bill.
 - **Partial submissions**: all 100 task ids are required. We do not
   accept "best 80 of 100" submissions; the geometric-spread of the
   task suite is the point.
-- **Multiple trials per task**: recommended and **flagged on the
-  leaderboard** so readers can distinguish them from the default
-  single-trial submissions. Manifest reports mean composite across
-  all trials and per-task standard deviation either way.
+- **One trial per task**: v2 rows contain exactly 100 trials, one for each
+  official task, with Harbor retries disabled. Run a new complete cohort for a
+  later submission; do not selectively replace failures from an earlier run.
 
 ## Trust model
 

@@ -4,11 +4,11 @@
 #   submissions/v2/<your-github-handle>-<agent>-<model>.yaml
 #
 # Validated against submissions/_schema/manifest-v2.schema.json by a
-# maintainer on every PR. Anything we re-derive (mean_composite,
+# maintainer on every PR. Anything we re-derive (mean_reward,
 # cost_usd) is checked against your declared values — mismatches fail
 # the PR.
 
-schema_version: 1
+schema_version: 2
 
 submission:
   version: 1
@@ -27,17 +27,21 @@ bench:
 
 agent:
   name: "codex"                      # short slug
+  display_name: "Codex"
+  display_url: "https://openai.com/codex/"
   version: "1.4.2"
   reasoning_effort: "max"
+  auth_mode: "api-key"
   import_path: ""                    # optional, for custom Harbor adapters
 
 model:
   id: "openai/gpt-5.5"               # LiteLLM-style id used by your runner
+  display_name: "GPT-5.5"
+  display_url: "https://developers.openai.com/api/docs/models/gpt-5.5"
   endpoint: ""                       # optional, only if non-default
 
 results:
-  # These jobs must be publicly readable. Multiple jobs are allowed when they
-  # contribute trials for the same exact agent/model/reasoning tuple.
+  # This job and all 100 trials must be publicly readable.
   source_jobs:
     - "https://hub.harborframework.com/jobs/01234567-89ab-cdef-0123-456789abcdef"
   source_filter:
@@ -52,13 +56,11 @@ results:
     runs_prefix: "runs/codex/openai-gpt-5_5/"
 
 declared:
-  mean_composite: 0.832
-  mean_geometry_similarity: 0.820
-  mean_cad_spec_consistency: 0.845
-  trials_per_task: 8
-  total_trials: 800
-  exceptions: 0
-  cost_usd: 170.00                   # optional; maintainers re-derive from token counts
+  mean_reward: 0.832
+  trials_per_task: 1
+  total_trials: 100
+  n_errors: 0
+  cost_usd: 170.00                   # optional; Harbor-recorded or independently audited
 
 notes: |
   Ran on 2026-09-02 against gnucleus-ai/cad-bench@v2. Codex was set to
