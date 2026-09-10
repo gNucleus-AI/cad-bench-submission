@@ -1,0 +1,56 @@
+schema_version: 1
+
+submission:
+  version: 1
+  submitted_at: "2026-08-20"
+
+contributor:
+  handle: "bruno-mutagent"
+  org: "MutagenT"
+  email: "bruno@mutagent.io"
+
+bench:
+  dataset: "gnucleus-ai/cad-bench"
+  tag: "v1"
+
+agent:
+  name: "freecad-engineer"
+  version: "0.1.0"
+  import_path: ""
+
+model:
+  id: "anthropic/claude-opus-5"
+  endpoint: ""
+
+results:
+  hf_repo: "Mutagent/cad-bench-results"
+  hf_commit_oid: "e81fd53950e2191cb938d69eb54c8a7434c244ce"
+  runs_prefix: "runs/freecad-engineer/anthropic-claude-opus-5/"
+
+declared:
+  mean_composite: 0.9605
+  trials_per_task: 1
+  total_trials: 100
+  exceptions: 0
+  cost_usd: 71.20
+
+notes: |
+  Ran 2026-08-19 against gnucleus-ai/cad-bench@v1 (harbor 0.21.0), stock
+  claude-code 2.1.231 with claude-opus-5 at reasoning_effort=high, single
+  attempt per task (no retries, no task repeats). The agent is a single
+  markdown instruction file (freecad-engineer.md) appended to each task via
+  harbor's --extra-instruction-path; source:
+  https://github.com/mutagent-io/examples/tree/main/showcase/freecad-engineer
+  Infrastructure notes: (a) a claude-code ELF was bind-mounted into trial
+  containers to skip the per-trial install (agent version identical to an
+  in-container install); (b) two local harbor-venv patches, both
+  scoring-neutral: a reward-JSON numeric filter dropping cad-bench's
+  non-numeric *_reason fields before pydantic validation, and a
+  len(secret)>=8 guard in the trial secret scrubber. (c) On task
+  freecad-0fe9d9e3ce the live verifier flaked (spec_consistency 0.0, see its
+  stored reward.json); an offline re-grade with the task's own sealed scorer
+  on the same answer.FCStd gives 1.0/1.0, and declared.mean_composite uses
+  that corrected value (raw artifacts left untouched). Re-grading the
+  uploaded answer.FCStd reproduces it. (d) Trial agent/sessions/ state dirs
+  were pruned and host paths in metadata relativized before upload;
+  trajectory.json and agent logs are complete.
