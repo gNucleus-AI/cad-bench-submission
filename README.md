@@ -104,4 +104,11 @@ the original frozen v1 inputs remain unchanged.
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+The license covers the code in this repository and the Parametric CAD Bench
+task content: the task specifications, reference models, and drawings of `v1`,
+`v2`, and `v3`, published as
+[`gnucleus-ai/cad-bench`](https://hub.harborframework.com/datasets/gnucleus-ai/cad-bench)
+on Harbor Hub. The FreeCAD and Open CASCADE Technology runtime in the task
+images keeps its own LGPL-2.1 license.
