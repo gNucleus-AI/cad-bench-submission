@@ -1,4 +1,4 @@
-"""Build one audited Parametric CAD Bench v2 Harbor leaderboard row."""
+"""Build one audited Parametric CAD Bench v3 Harbor leaderboard row."""
 
 from __future__ import annotations
 
@@ -29,8 +29,8 @@ from cad_bench_submission.validation import (
 
 
 EXPECTED_TASKS = 100
-EXPECTED_HARBOR_VERSION = "0.20.0"
-LEADERBOARD_DEFINITION = REPOSITORY_ROOT / "leaderboards" / "v2.yaml"
+EXPECTED_HARBOR_VERSION = "0.23.0"
+LEADERBOARD_DEFINITION = REPOSITORY_ROOT / "leaderboards" / "v3.yaml"
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -52,7 +52,7 @@ def _require(condition: bool, message: str) -> None:
 
 def _source_job_id(manifest: dict[str, Any]) -> str:
     source_jobs = manifest["results"]["source_jobs"]
-    _require(len(source_jobs) == 1, "v2 rows require exactly one source job")
+    _require(len(source_jobs) == 1, "v3 rows require exactly one source job")
     match = HARBOR_JOB_ID_PATTERN.fullmatch(source_jobs[0])
     _require(match is not None, "source job is not a canonical Harbor Hub job URL")
     return match.group(1)
@@ -84,6 +84,27 @@ def _live_definition() -> dict[str, Any]:
     return value
 
 
+def _locked_task_names(lock: dict[str, Any], policy: dict[str, Any]) -> list[str]:
+    names_by_digest = {digest: name for name, digest in policy["task_digests"].items()}
+    names = []
+    for trial in lock["trials"]:
+        task = trial["task"]
+        digest = task.get("digest") or task.get("ref")
+        expected = names_by_digest.get(digest)
+        _require(expected is not None, "job lock contains a non-v3 task digest")
+        _require(task.get("source") == policy["dataset"], "job lock task source mismatch")
+        name = task.get("name")
+        if name == "task" and task.get("type") == "local" and task.get("path"):
+            # Hosted locks use a generic extraction-directory name. Resolve by
+            # the pinned digest, never by lock ordering or the temporary path.
+            name = expected
+        elif isinstance(name, str) and "/" not in name:
+            name = f"gnucleus-ai/{name}"
+        _require(name == expected, "job lock task name/digest mismatch")
+        names.append(name)
+    return sorted(names)
+
+
 def _validate_row_schema(row: dict[str, Any]) -> None:
     definition = _live_definition()
     checker = FormatChecker()
@@ -102,7 +123,7 @@ def _validate_row_schema(row: dict[str, Any]) -> None:
     issues = [*metadata_issues, *metric_issues]
     if issues:
         rendered = "; ".join(error.message for error in issues)
-        raise ValueError(f"generated row does not match live v2 schema: {rendered}")
+        raise ValueError(f"generated row does not match live v3 schema: {rendered}")
 
 
 def build_row(
@@ -112,13 +133,14 @@ def build_row(
     cost_audit_path: Path | None = None,
 ) -> dict[str, Any]:
     """Audit one complete Harbor job and return an import-ready hidden row."""
-    policy = load_policies()["v2"]
-    _require(policy["leaderboard"] == "v2", "v2 policy is not routed to v2")
-    _require(policy["task_count"] == EXPECTED_TASKS, "v2 policy must contain 100 tasks")
+    policy = load_policies()["v3"]
+    _require(policy["leaderboard"] == "v3", "v3 policy is not routed to v3")
+    _require(policy["task_count"] == EXPECTED_TASKS, "v3 policy must contain 100 tasks")
 
     manifest_issues = validate_manifest(manifest)
+    _require(manifest.get("bench", {}).get("tag") == "v3", "only v3 submissions are accepted")
     if manifest_issues:
-        raise ValueError("invalid v2 manifest: " + "; ".join(manifest_issues))
+        raise ValueError("invalid v3 manifest: " + "; ".join(manifest_issues))
 
     job_id = _source_job_id(manifest)
     job_dir = _find_job_dir(artifacts_root.resolve(), job_id)
@@ -129,6 +151,11 @@ def build_row(
     root = _load_json(job_dir / "result.json")
     config_path = job_dir / "config.json"
     config = _load_json(config_path)
+    _require(
+        (job_dir / "lock.json").is_file(),
+        "job lock.json is required to verify the Harbor version and retry policy; "
+        "retain the original job lock if an older download omitted it",
+    )
     lock = _load_json(job_dir / "lock.json")
     trials = [_load_json(path) for path in sorted(job_dir.glob("*/result.json"))]
 
@@ -141,14 +168,20 @@ def build_row(
         lock.get("harbor", {}).get("version") == EXPECTED_HARBOR_VERSION,
         f"job must use Harbor {EXPECTED_HARBOR_VERSION}",
     )
+    datasets = config.get("datasets") or []
     _require(
-        config.get("datasets")
-        == [{"name": policy["dataset"], "ref": policy["dataset_content_hash"]}],
-        "job config does not pin the frozen v2 dataset digest",
+        len(datasets) == 1
+        and datasets[0].get("name") == policy["dataset"]
+        and datasets[0].get("ref") == policy["dataset_content_hash"]
+        and not config.get("tasks"),
+        "job config does not pin the frozen v3 dataset digest",
     )
 
-    expected_names = sorted(item["task"]["name"] for item in lock["trials"])
-    actual_names = sorted(item["task_name"] for item in trials)
+    expected_names = _locked_task_names(lock, policy)
+    actual_names = sorted(
+        item["task_name"] if "/" in item["task_name"] else f"gnucleus-ai/{item['task_name']}"
+        for item in trials
+    )
     _require(len(set(expected_names)) == EXPECTED_TASKS, "lock does not contain 100 unique tasks")
     _require(actual_names == expected_names, "trial cohort does not match the job lock")
 
@@ -173,12 +206,16 @@ def build_row(
         lock_efforts == {source_filter["reasoning_effort"]},
         "reasoning effort does not match job lock",
     )
-    _require(
-        lock_versions == {source_filter["agent_version"]},
-        "agent version does not match job lock",
-    )
+    if lock_versions == {None}:
+        # Antigravity records its installed version in every trial's agent_info
+        # rather than in the requested kwargs. The artifact audit checks it too.
+        observed_versions = {(trial.get("agent_info") or {}).get("version") for trial in trials}
+        _require(observed_versions == {source_filter["agent_version"]}, "agent version does not match trial evidence")
+    else:
+        _require(lock_versions == {source_filter["agent_version"]}, "agent version does not match job lock")
 
     rewards: list[float] = []
+    mode_rewards: dict[str, list[float]] = {mode: [] for mode in policy["mode_counts"]}
     durations: list[float] = []
     known_costs: list[float] = []
     known_tokens: list[int] = []
@@ -203,6 +240,11 @@ def build_row(
         else:
             reward = 0.0
         rewards.append(reward)
+        task_name = trial["task_name"]
+        if "/" not in task_name:
+            task_name = f"gnucleus-ai/{task_name}"
+        _require(task_name in policy["task_modes"], f"unknown v3 task: {task_name}")
+        mode_rewards[policy["task_modes"][task_name]].append(reward)
 
         duration = (
             _instant(trial["finished_at"]) - _instant(trial["started_at"])
@@ -231,6 +273,7 @@ def build_row(
         ):
             known_tokens.append(input_tokens + output_tokens)
 
+    _require(len(set(trial_ids)) == EXPECTED_TASKS, "trial IDs must be unique")
     mean_reward = statistics.fmean(rewards)
     _require(
         abs(mean_reward - float(manifest["declared"]["mean_reward"]))
@@ -292,6 +335,7 @@ def build_row(
             "harbor_version": lock["harbor"]["version"],
             "auth_mode": agent["auth_mode"],
             "run_date": started.date().isoformat(),
+            "benchmark_tag": "v3",
             "dataset_digest": policy["dataset_content_hash"],
             "config_sha256": hashlib.sha256(config_path.read_bytes()).hexdigest(),
             "job_display": {
@@ -323,6 +367,11 @@ def build_row(
         "status": "hide",
         "trial_ids": trial_ids,
     }
+    for mode, values in mode_rewards.items():
+        _require(len(values) == policy["mode_counts"][mode], f"incomplete {mode} cohort")
+        mean = statistics.fmean(values)
+        row["metrics"][f"{mode}_mean_reward"] = mean
+        row["metrics"][f"display_{mode}_score"] = f"{100 * mean:.2f}%"
     _validate_row_schema(row)
     return row
 
@@ -352,7 +401,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({"rows": [row]}, indent=2) + "\n")
-    print(f"Wrote hidden v2 leaderboard row to {args.output}")
+    print(f"Wrote hidden v3 leaderboard row to {args.output}")
     return 0
 
 

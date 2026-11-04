@@ -1,10 +1,3 @@
-# Active CAD-Bench v2 submissions
+# V2 submissions closed
 
-This is the only directory accepting new leaderboard manifests. Copy
-[`example-v2.yaml`](../_template/example-v2.yaml) here, name it
-`<github-handle>-<agent>-<model>.yaml`, and run:
-
-```bash
-uv run python -m cad_bench_submission.validation
-uv run pytest
-```
+New and updated v2 submissions are not accepted. Use [v3](../v3/README.md).

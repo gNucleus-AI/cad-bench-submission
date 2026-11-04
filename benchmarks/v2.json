@@ -6,7 +6,7 @@
   "task_count": 100,
   "freecad_version": "1.1.0",
   "leaderboard": "v2",
-  "accepting_submissions": true,
+  "accepting_submissions": false,
   "submission_source": {
     "type": "harbor_jobs",
     "visibility": "public"

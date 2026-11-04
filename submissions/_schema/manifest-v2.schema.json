@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/gNucleus-AI/cad-bench-submission/blob/main/submissions/_schema/manifest-v2.schema.json",
   "title": "Parametric CAD Bench v2 submission manifest",
-  "description": "Pointer to public Harbor Hub jobs, the exact trial-selection key, and self-declared summary metrics that maintainers re-derive during review.",
+  "description": "Historical v2 manifest schema. V2 submission intake is closed; new submissions must use v3.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -80,7 +80,7 @@
         "tag": {
           "type": "string",
           "const": "v2",
-          "description": "The only benchmark version currently accepting submissions."
+          "description": "Historical benchmark version; new v2 submissions are not accepted."
         },
         "dataset_content_hash": {
           "type": "string",
@@ -131,7 +131,10 @@
         },
         "auth_mode": {
           "type": "string",
-          "enum": ["api-key", "subscription"],
+          "enum": [
+            "api-key",
+            "subscription"
+          ],
           "description": "Authentication mode used by the agent for this run."
         }
       }
@@ -275,13 +278,13 @@
         "cost_usd": {
           "type": "number",
           "minimum": 0,
-          "description": "Optional. Maintainers re-derive from token counts × published pricing; the leaderboard uses the re-derived value."
+          "description": "Optional. Maintainers re-derive from token counts \u00d7 published pricing; the leaderboard uses the re-derived value."
         }
       }
     },
     "notes": {
       "type": "string",
-      "description": "Optional free-form notes — harness tweaks, known limitations, agent quirks."
+      "description": "Optional free-form notes \u2014 harness tweaks, known limitations, agent quirks."
     }
   }
 }
