@@ -1,18 +1,18 @@
 # Parametric CAD Bench — example submission manifest.
 #
 # Copy this file to:
-#   submissions/v2/<your-github-handle>-<agent>-<model>.yaml
+#   submissions/v3/<your-github-handle>-<agent>-<model>.yaml
 #
-# Validated against submissions/_schema/manifest-v2.schema.json by a
-# maintainer on every PR. Anything we re-derive (mean_reward,
-# cost_usd) is checked against your declared values — mismatches fail
-# the PR.
+# Validated against submissions/_schema/manifest-v3.schema.json by a
+# maintainer on every PR. Declared mean_reward and n_errors are checked
+# against the audited artifacts. cost_usd is informational; the row uses
+# recorded costs or an independent complete cost audit.
 
-schema_version: 2
+schema_version: 3
 
 submission:
   version: 1
-  submitted_at: "2026-09-03"
+  submitted_at: "2026-11-04"
 
 contributor:
   handle: "octocat"
@@ -21,9 +21,9 @@ contributor:
 
 bench:
   dataset: "gnucleus-ai/cad-bench"
-  tag: "v2"
-  # Exact immutable digest resolved from gnucleus-ai/cad-bench@v2.
-  dataset_content_hash: "sha256:ab2e040d0adcfd2779b4f1ad554890cd98b5aa19845e00162933ba165144fe56"
+  tag: "v3"
+  # Exact immutable digest resolved from gnucleus-ai/cad-bench@v3.
+  dataset_content_hash: "sha256:8a786725d3648a76282fc5868df06da3d5e00d603f283573a53430803465d78a"
 
 agent:
   name: "codex"                      # short slug
@@ -63,5 +63,6 @@ declared:
   cost_usd: 170.00                   # optional; Harbor-recorded or independently audited
 
 notes: |
-  Ran on 2026-09-02 against gnucleus-ai/cad-bench@v2. Codex was set to
-  reasoning_effort=max with 32K max output tokens. No harness patches.
+  Example only: replace all metadata and scores with your actual v3 run.
+  Harbor 0.23.0, one attempt per task, zero retries. Describe any multimodal
+  adapter or system-prompt modifications here.

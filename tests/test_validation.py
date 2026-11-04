@@ -7,6 +7,8 @@ import pytest
 
 from cad_bench_submission.validation import (
     REPOSITORY_ROOT,
+    default_manifest_paths,
+    load_policies,
     load_yaml,
     validate_manifest,
     validate_manifest_file,
@@ -15,17 +17,17 @@ from cad_bench_submission.validation import (
 
 
 @pytest.fixture
-def v2_manifest() -> dict:
+def v3_manifest() -> dict:
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "submission": {"version": 1, "submitted_at": "2026-09-03"},
         "contributor": {"handle": "octocat"},
         "bench": {
             "dataset": "gnucleus-ai/cad-bench",
-            "tag": "v2",
+            "tag": "v3",
             "dataset_content_hash": (
-                "sha256:ab2e040d0adcfd2779b4f1ad554890cd"
-                "98b5aa19845e00162933ba165144fe56"
+                "sha256:8a786725d3648a76282fc5868df06da3"
+                "d5e00d603f283573a53430803465d78a"
             ),
         },
         "agent": {
@@ -75,54 +77,86 @@ def test_v1_intake_is_closed() -> None:
     assert any("v1 submissions are closed" in issue for issue in issues)
 
 
-def test_closed_v1_policy_is_reported_before_schema_noise(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v2_intake_is_closed_even_for_a_valid_historical_manifest(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
+    manifest["schema_version"] = 2
+    manifest["bench"].update(tag="v2", dataset_content_hash=load_policies()["v2"]["dataset_content_hash"])
+    assert validate_manifest(manifest, allow_archived=True) == []
+    assert validate_manifest(manifest) == [
+        "$.bench.tag: v2 submissions are closed; submit against gnucleus-ai/cad-bench@v3"
+    ]
+
+
+@pytest.mark.parametrize("tag", ["v1", "v2"])
+def test_new_manifest_in_closed_directory_is_rejected(tmp_path, tag: str, v3_manifest: dict) -> None:
+    path = tmp_path / "submissions" / tag / "new.yaml"
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(v3_manifest))
+    assert validate_manifest_file(path)
+    if tag == "v2":
+        assert validate_repository_layout(tmp_path)
+
+
+def test_v3_is_the_only_active_policy_and_default_directory(tmp_path, monkeypatch) -> None:
+    import cad_bench_submission.validation as validation
+
+    assert [tag for tag, policy in load_policies().items() if policy["accepting_submissions"]] == ["v3"]
+    for tag in ("v1", "v2", "v3"):
+        directory = tmp_path / "submissions" / tag
+        directory.mkdir(parents=True)
+        (directory / "example.yaml").write_text("{}")
+    monkeypatch.setattr(validation, "REPOSITORY_ROOT", tmp_path)
+    assert default_manifest_paths() == [tmp_path / "submissions/v3/example.yaml"]
+
+
+def test_closed_v1_policy_is_reported_before_schema_noise(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["bench"]["tag"] = "v1"
     issues = validate_manifest(manifest)
     assert issues == [
         "$.bench.tag: v1 submissions are closed; submit against "
-        "gnucleus-ai/cad-bench@v2"
+        "gnucleus-ai/cad-bench@v3"
     ]
 
 
-def test_v2_template_is_valid() -> None:
-    template = REPOSITORY_ROOT / "submissions" / "_template" / "example-v2.yaml"
+def test_v3_template_is_valid() -> None:
+    template = REPOSITORY_ROOT / "submissions" / "_template" / "example-v3.yaml"
     assert validate_manifest_file(template) == []
 
 
-def test_valid_v2_manifest(v2_manifest: dict) -> None:
-    assert validate_manifest(v2_manifest) == []
+def test_valid_v3_manifest(v3_manifest: dict) -> None:
+    assert validate_manifest(v3_manifest) == []
 
 
-def test_v2_requires_frozen_dataset_digest(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_requires_frozen_dataset_digest(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     del manifest["bench"]["dataset_content_hash"]
     issues = validate_manifest(manifest)
     assert any("dataset_content_hash" in issue for issue in issues)
 
 
-def test_v2_rejects_wrong_dataset_digest(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_rejects_wrong_dataset_digest(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["bench"]["dataset_content_hash"] = "sha256:" + "0" * 64
     issues = validate_manifest(manifest)
-    assert any("frozen v2 digest" in issue for issue in issues)
+    assert any("frozen v3 digest" in issue for issue in issues)
 
 
-def test_v2_requires_reasoning_effort(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_requires_reasoning_effort(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     del manifest["agent"]["reasoning_effort"]
     issues = validate_manifest(manifest)
     assert any("reasoning_effort" in issue for issue in issues)
 
 
-def test_v2_requires_mean_reward(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_requires_mean_reward(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     del manifest["declared"]["mean_reward"]
     issues = validate_manifest(manifest)
     assert any("mean_reward" in issue for issue in issues)
 
 
-def test_v2_requires_live_display_and_auth_metadata(v2_manifest: dict) -> None:
+def test_v3_requires_live_display_and_auth_metadata(v3_manifest: dict) -> None:
     for section, field in (
         ("agent", "display_name"),
         ("agent", "display_url"),
@@ -130,14 +164,14 @@ def test_v2_requires_live_display_and_auth_metadata(v2_manifest: dict) -> None:
         ("model", "display_name"),
         ("model", "display_url"),
     ):
-        manifest = copy.deepcopy(v2_manifest)
+        manifest = copy.deepcopy(v3_manifest)
         del manifest[section][field]
         issues = validate_manifest(manifest)
         assert any(field in issue for issue in issues)
 
 
-def test_v2_requires_one_complete_cohort(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_requires_one_complete_cohort(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["declared"]["trials_per_task"] = 2
     manifest["declared"]["total_trials"] = 200
     issues = validate_manifest(manifest)
@@ -145,8 +179,8 @@ def test_v2_requires_one_complete_cohort(v2_manifest: dict) -> None:
     assert any("total_trials" in issue for issue in issues)
 
 
-def test_v2_requires_one_source_job(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_requires_one_source_job(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["results"]["source_jobs"].append(
         "https://hub.harborframework.com/jobs/11111111-1111-4111-8111-111111111111"
     )
@@ -154,8 +188,8 @@ def test_v2_requires_one_source_job(v2_manifest: dict) -> None:
     assert any("source_jobs" in issue for issue in issues)
 
 
-def test_v2_requires_public_harbor_job_url(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_v3_requires_public_harbor_job_url(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["results"]["source_jobs"] = [
         "https://huggingface.co/datasets/octocat/results"
     ]
@@ -163,31 +197,31 @@ def test_v2_requires_public_harbor_job_url(v2_manifest: dict) -> None:
     assert any("does not match" in issue and "source_jobs" in issue for issue in issues)
 
 
-def test_source_filter_must_match_manifest_metadata(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_source_filter_must_match_manifest_metadata(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["results"]["source_filter"]["model"] = "openai/a-different-model"
     issues = validate_manifest(manifest)
     assert any("source_filter.model" in issue for issue in issues)
 
 
-def test_total_trials_uses_version_task_count(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+def test_total_trials_uses_version_task_count(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
     manifest["declared"]["total_trials"] = 99
     issues = validate_manifest(manifest)
     assert any("expected 1 × 100 = 100" in issue for issue in issues)
 
 
-def test_unknown_benchmark_version_is_rejected(v2_manifest: dict) -> None:
-    manifest = copy.deepcopy(v2_manifest)
-    manifest["bench"]["tag"] = "v3"
+def test_unknown_benchmark_version_is_rejected(v3_manifest: dict) -> None:
+    manifest = copy.deepcopy(v3_manifest)
+    manifest["bench"]["tag"] = "v4"
     issues = validate_manifest(manifest)
-    assert any("'v2' was expected" in issue for issue in issues)
+    assert any("'v3' was expected" in issue for issue in issues)
     assert any("no benchmark policy" in issue for issue in issues)
 
 
 def test_example_is_parseable_mapping() -> None:
-    template = REPOSITORY_ROOT / "submissions" / "_template" / "example-v2.yaml"
-    assert load_yaml(template)["bench"]["tag"] == "v2"
+    template = REPOSITORY_ROOT / "submissions" / "_template" / "example-v3.yaml"
+    assert load_yaml(template)["bench"]["tag"] == "v3"
 
 
 def test_repository_layout_is_versioned() -> None:
@@ -203,15 +237,15 @@ def test_top_level_manifest_is_rejected(tmp_path) -> None:
 
 
 def test_manifest_tag_must_match_versioned_directory(
-    tmp_path, v2_manifest: dict
+    tmp_path, v3_manifest: dict
 ) -> None:
-    manifest = copy.deepcopy(v2_manifest)
+    manifest = copy.deepcopy(v3_manifest)
     manifest["bench"]["tag"] = "v1"
-    path = tmp_path / "submissions" / "v2" / "wrong-tag.yaml"
+    path = tmp_path / "submissions" / "v3" / "wrong-tag.yaml"
     path.parent.mkdir(parents=True)
     path.write_text(json.dumps(manifest), encoding="utf-8")
 
     issues = validate_manifest_file(path)
     assert issues[0] == (
-        "$.bench.tag: manifests under submissions/v2/ must declare 'v2', got 'v1'"
+        "$.bench.tag: manifests under submissions/v3/ must declare 'v3', got 'v1'"
     )

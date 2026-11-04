@@ -34,7 +34,7 @@ def _first_existing(directory: Path, candidates: list[str]) -> Path | None:
 
 
 def _task_identity(
-    result: dict[str, Any], config: dict[str, Any]
+    result: dict[str, Any], config: dict[str, Any], lock: dict[str, Any] | None = None
 ) -> tuple[str | None, str | None, str | None]:
     # The trial config is the evidence for what task the agent actually ran.
     # result.json is only a fallback for normalized legacy exports.
@@ -48,6 +48,20 @@ def _task_identity(
         return None, None, None
 
     name = task.get("name")
+    # Hosted Harbor extracts the package to a temporary local directory. The
+    # result retains its public name; the trial lock retains its content hash.
+    if name is None and task.get("path") and lock is not None:
+        locked = lock.get("task", {})
+        environment = config.get("environment") or {}
+        if (
+            environment.get("import_path") == "hosted_harbor.isolation.environment:SupervisorEnvironment"
+            and locked.get("type") == "local"
+            and locked.get("name") == "task"
+            and locked.get("path") == task["path"]
+            and locked.get("source") == task.get("source")
+        ):
+            name = result.get("task_name")
+            task = {"name": name, "digest": locked.get("digest"), "source": locked.get("source")}
     if isinstance(name, str) and "/" not in name:
         name = f"gnucleus-ai/{name}"
     ref = task.get("ref") or task.get("digest")
@@ -71,6 +85,15 @@ def _score_from_file(path: Path, field: str) -> tuple[float | None, str | None]:
     if not math.isfinite(score) or not 0 <= score <= 1:
         return None, f"{path}: {field!r} must be finite and in [0, 1]"
     return score, None
+
+
+def _detail_value(details: dict[str, Any], field: str) -> Any:
+    value: Any = details
+    for key in field.split("."):
+        if not isinstance(value, dict):
+            return None
+        value = value.get(key)
+    return value
 
 
 def _trial_source_key(result: dict[str, Any]) -> dict[str, Any]:
@@ -135,7 +158,7 @@ def audit_artifacts(
     expected_source_filter: dict[str, Any] | None = None
     expected_job_ids: set[str] = set()
     seen_job_ids: set[str] = set()
-    if policy["tag"] == "v2":
+    if policy["tag"] in {"v2", "v3"}:
         expected_source_filter = manifest["results"]["source_filter"]
         for url in manifest["results"]["source_jobs"]:
             match = HARBOR_JOB_ID_PATTERN.fullmatch(url)
@@ -192,7 +215,15 @@ def audit_artifacts(
             issues.append(f"{config_path}: invalid or missing trial config: {error}")
             config = {}
 
-        task_name, task_ref, source = _task_identity(result, config)
+        trial_lock = None
+        if policy["tag"] == "v3" and (config.get("task") or {}).get("path"):
+            try:
+                trial_lock = _load_json(trial_dir / "lock.json")
+            except (OSError, ValueError) as error:
+                issues.append(f"{label}: missing or invalid hosted trial lock: {error}")
+        task_name, task_ref, source = _task_identity(result, config, trial_lock)
+        mode = policy.get("task_modes", {}).get(task_name)
+        task_contract = contract.get("mode_contracts", {}).get(mode, contract)
         if task_name is None:
             issues.append(f"{label}: cannot determine task name")
         else:
@@ -227,6 +258,13 @@ def audit_artifacts(
                 score = 0.0
                 has_exception = True
 
+        if policy["tag"] == "v3":
+            recorded = ((result.get("verifier_result") or {}).get("rewards") or {}).get("reward")
+            if not isinstance(recorded, (int, float)) or isinstance(recorded, bool) or not math.isfinite(recorded):
+                has_exception = True
+            elif not has_exception and score is not None and abs(recorded - score) > SCORE_TOLERANCE:
+                issues.append(f"{label}: result.json reward does not match reward.json")
+
         trajectory = _first_existing(trial_dir, contract["trajectory_one_of"])
         if trajectory is None:
             issues.append(f"{label}: no accepted trajectory artifact found")
@@ -235,7 +273,13 @@ def audit_artifacts(
             trial_dir, ["agent.log", f"agent/{agent_name}.txt"]
         )
         if agent_log is None:
-            issues.append(f"{label}: no accepted agent log found")
+            antigravity_logs = (
+                agent_name == "antigravity-cli"
+                and (trial_dir / "agent/antigravity-cli.err").is_file()
+                and (trial_dir / "agent/antigravity-stream.jsonl").is_file()
+            )
+            if not antigravity_logs:
+                issues.append(f"{label}: no accepted agent log found")
 
         if has_exception:
             exception_count += 1
@@ -257,9 +301,22 @@ def audit_artifacts(
                 issues.append(f"{details_path}: invalid details JSON: {error}")
                 details = {}
 
+        # All three published v3 verifiers emit this envelope for a scored zero
+        # such as missing candidate output or a scorer crash. This matches the
+        # published rows: a finite zero reward is scored, not an unscored error.
+        if (
+            policy["tag"] == "v3" and score == 0
+            and type(details.get("score")) in (int, float)
+            and details["score"] == 0
+            and isinstance(details.get("reason"), str) and details["reason"].strip()
+            and "combined" not in details
+        ):
+            reward_scores.append(0.0)
+            continue
+
         detail_values: dict[str, float] = {}
-        for field in contract["details_fields"]:
-            value = details.get(field)
+        for field in task_contract.get("details_fields", ["combined"]):
+            value = _detail_value(details, field)
             if not isinstance(value, (int, float)) or isinstance(value, bool):
                 issues.append(f"{label}: details field {field!r} must be numeric")
                 detail_values[field] = 0.0
@@ -277,14 +334,19 @@ def audit_artifacts(
                 f"details combined {combined:.8f}"
             )
 
-        answer_fcstd = _first_existing(
-            trial_dir, ["answer.FCStd", "artifacts/app/answer.FCStd"]
-        )
-        answer_py = _first_existing(trial_dir, ["answer.py", "artifacts/app/answer.py"])
-        if score > 0 and answer_fcstd is None:
-            issues.append(f"{label}: positive-scoring trial is missing answer.FCStd")
-        if score > 0 and answer_py is None:
-            issues.append(f"{label}: positive-scoring trial is missing answer.py")
+        if mode == "create_edit":
+            base = detail_values.get("base.combined", 0.0)
+            target = detail_values.get("target.combined", 0.0)
+            expected = 2 * base * target / (base + target) if base + target else 0.0
+            if abs(combined - expected) > SCORE_TOLERANCE:
+                issues.append(f"{label}: combined does not match base/target harmonic mean")
+
+        for filename in task_contract.get("answer_files", ["answer.FCStd", "answer.py"]):
+            candidates = [filename, f"artifacts/app/{filename}"]
+            if policy["tag"] == "v3":
+                candidates.append(f"agent/answer/{filename}")
+            if score > 0 and _first_existing(trial_dir, candidates) is None:
+                issues.append(f"{label}: positive-scoring trial is missing {filename}")
 
         reward_scores.append(score)
 
@@ -316,9 +378,9 @@ def audit_artifacts(
                 f"audited {actual:.8f}"
             )
 
-    mean_field = "mean_reward" if policy["tag"] == "v2" else "mean_composite"
+    mean_field = "mean_composite" if policy["tag"] == "v1" else "mean_reward"
     compare_mean(mean_field, reward_scores)
-    error_field = "n_errors" if policy["tag"] == "v2" else "exceptions"
+    error_field = "exceptions" if policy["tag"] == "v1" else "n_errors"
     if exception_count != declared[error_field]:
         issues.append(
             f"$.declared.{error_field}: declared {declared[error_field]}, "
@@ -337,16 +399,20 @@ def main(argv: list[str] | None = None) -> int:
         required=True,
         type=Path,
         help=(
-            "v2: directory containing only the downloaded source_jobs; "
+            "v3: directory containing only the downloaded source_jobs; "
             "v1 archive: root of the pinned Hugging Face snapshot"
         ),
+    )
+    parser.add_argument(
+        "--allow-archived", action="store_true",
+        help="Historical v1/v2 audit only; does not enable submission intake.",
     )
     args = parser.parse_args(argv)
 
     manifest = load_yaml(args.manifest)
     # Artifact audits remain available for the immutable v1 archive, even
     # though new v1 intake is closed.
-    issues = validate_manifest(manifest, allow_archived=True)
+    issues = validate_manifest(manifest, allow_archived=args.allow_archived)
     if not issues:
         policy = load_policies()[manifest["bench"]["tag"]]
         issues = audit_artifacts(manifest, args.artifacts_root, policy)

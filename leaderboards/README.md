@@ -3,11 +3,11 @@
 This directory contains reviewed import inputs for curated CAD-Bench
 leaderboards on Harbor Hub.
 
-## Active v2
+## Active v3
 
-- `v2.yaml` mirrors the public Parametric CAD Bench v2 definition and is bound
-  to dataset revision `v2`.
-- `cad_bench_submission.build_v2_leaderboard_row` audits one complete public
+- `v3.yaml` mirrors the public Parametric CAD Bench v3 definition and is bound
+  to dataset revision `v3`.
+- `cad_bench_submission.build_v3_leaderboard_row` audits one complete public
   100-task Harbor job and generates a row matching that definition.
 - Generated rows start with status `hide` so maintainers can inspect the row and
   its 100 trial associations before making it visible.
@@ -17,7 +17,7 @@ Download and audit the source job declared by a reviewed manifest:
 ```bash
 harbor job download <job-uuid> --output-dir .audit
 uv run python -m cad_bench_submission.artifact_validation \
-  submissions/v2/<manifest>.yaml \
+  submissions/v3/<manifest>.yaml \
   --artifacts-root .audit
 ```
 
@@ -26,13 +26,13 @@ backfill is required for a provider whose Harbor agent result lacks complete
 costs.
 
 ```bash
-uv run python -m cad_bench_submission.build_v2_leaderboard_row \
-  submissions/v2/<manifest>.yaml \
+uv run python -m cad_bench_submission.build_v3_leaderboard_row \
+  submissions/v3/<manifest>.yaml \
   --artifacts-root .audit \
-  --output /tmp/cad-bench-v2-row.json
+  --output /tmp/cad-bench-v3-row.json
 
-harbor hub leaderboard row create gnucleus-ai/cad-bench/v2 \
-  --config /tmp/cad-bench-v2-row.json \
+harbor hub leaderboard row create gnucleus-ai/cad-bench/v3 \
+  --config /tmp/cad-bench-v3-row.json \
   --json
 ```
 
@@ -44,6 +44,10 @@ harbor hub leaderboard row show <row-uuid>
 harbor hub leaderboard row trial list <row-uuid> --quiet
 harbor hub leaderboard row update <row-uuid> --status display
 ```
+
+## Closed v2
+
+`v2.yaml` is retained for historical inspection. New v2 rows and submissions are no longer accepted.
 
 ## Frozen v1
 

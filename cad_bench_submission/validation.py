@@ -6,6 +6,7 @@ import argparse
 import json
 import sys
 from collections.abc import Iterable
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -14,9 +15,11 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+ACTIVE_TAG = "v3"
 SCHEMA_PATHS = {
     "v1": REPOSITORY_ROOT / "submissions" / "_schema" / "manifest-v1.schema.json",
     "v2": REPOSITORY_ROOT / "submissions" / "_schema" / "manifest-v2.schema.json",
+    "v3": REPOSITORY_ROOT / "submissions" / "_schema" / "manifest-v3.schema.json",
 }
 BENCHMARKS_DIR = REPOSITORY_ROOT / "benchmarks"
 
@@ -56,6 +59,16 @@ def load_policies() -> dict[str, dict[str, Any]]:
                 f"{path}: task_count={task_count!r} does not match the "
                 f"task-digest map"
             )
+        if tag == "v3":
+            modes = policy.get("task_modes", {})
+            expected_modes = {"create": 30, "create_edit": 30, "image_to_cad": 40}
+            if (
+                set(modes) != set(task_digests)
+                or Counter(modes.values()) != expected_modes
+                or policy.get("mode_counts") != expected_modes
+                or set(policy["artifact_contract"].get("mode_contracts", {})) != set(expected_modes)
+            ):
+                raise ValueError(f"{path}: invalid v3 task-mode partition")
         policies[tag] = policy
     return policies
 
@@ -83,13 +96,13 @@ def validate_manifest(
         if not allow_archived:
             return [
                 f"$.bench.tag: {tag} submissions are closed; submit against "
-                "gnucleus-ai/cad-bench@v2"
+                f"gnucleus-ai/cad-bench@{ACTIVE_TAG}"
             ]
 
     if schema is None:
         # Use the active schema as a structural fallback so malformed or unknown
         # tags still receive useful schema errors.
-        schema = load_schema(tag if tag in SCHEMA_PATHS else "v2")
+        schema = load_schema(tag if tag in SCHEMA_PATHS else ACTIVE_TAG)
     issues = [
         f"{_json_path(error.absolute_path)}: {error.message}"
         for error in sorted(
@@ -117,7 +130,7 @@ def validate_manifest(
 
     submitted_hash = bench.get("dataset_content_hash")
     expected_hash = policy["dataset_content_hash"]
-    if tag == "v2" and submitted_hash != expected_hash:
+    if tag in {"v2", "v3"} and submitted_hash != expected_hash:
         issues.append(
             "$.bench.dataset_content_hash: expected the frozen "
             f"{tag} digest {expected_hash!r}, got {submitted_hash!r}"
@@ -128,7 +141,7 @@ def validate_manifest(
             f"{expected_hash!r}, got {submitted_hash!r}"
         )
 
-    if tag == "v2":
+    if tag in {"v2", "v3"}:
         agent = manifest.get("agent")
         model = manifest.get("model")
         results = manifest.get("results")
@@ -165,7 +178,7 @@ def validate_manifest(
                 f"got {total_trials}"
             )
 
-    error_field = "n_errors" if tag == "v2" else "exceptions"
+    error_field = "exceptions" if tag == "v1" else "n_errors"
     exceptions = declared.get(error_field)
     if (
         isinstance(exceptions, int)
@@ -200,7 +213,7 @@ def validate_manifest_file(path: Path, *, allow_archived: bool = False) -> list[
 
 
 def default_manifest_paths() -> list[Path]:
-    return sorted((REPOSITORY_ROOT / "submissions" / "v2").glob("*.yaml"))
+    return sorted((REPOSITORY_ROOT / "submissions" / ACTIVE_TAG).glob("*.yaml"))
 
 
 def validate_repository_layout(root: Path = REPOSITORY_ROOT) -> list[str]:
@@ -214,12 +227,12 @@ def validate_repository_layout(root: Path = REPOSITORY_ROOT) -> list[str]:
     )
     for path in manifest_paths:
         is_archive = path.parent == submissions / "v1" and path.suffix == ".yaml"
-        is_active = path.parent == submissions / "v2" and path.suffix == ".yaml"
-        is_template = path == submissions / "_template" / "example-v2.yaml"
+        is_active = path.parent == submissions / ACTIVE_TAG and path.suffix == ".yaml"
+        is_template = path == submissions / "_template" / "example-v3.yaml"
         if not (is_archive or is_active or is_template):
             issues.append(
                 f"{path}: manifests are accepted only as .yaml files directly "
-                "under submissions/v2/"
+                "under submissions/v3/; v1 and v2 intake is closed"
             )
     return issues
 
@@ -230,7 +243,7 @@ def main(argv: list[str] | None = None) -> int:
         "manifests",
         nargs="*",
         type=Path,
-        help="manifest YAML files (defaults to active v2 submissions)",
+        help="manifest YAML files (defaults to active v3 submissions)",
     )
     parser.add_argument(
         "--include-archive",
@@ -247,7 +260,7 @@ def main(argv: list[str] | None = None) -> int:
             for issue in layout_issues:
                 print(issue, file=sys.stderr)
             return 1
-        print("OK no active v2 submission manifests")
+        print("OK no active v3 submission manifests")
         return 0
 
     failed = bool(layout_issues)
